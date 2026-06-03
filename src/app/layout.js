@@ -22,3 +22,9 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+export const metadata = {
+  title: "Mahadev Ratnam | Gold Jewellery Wholesaler",
+  description:
+    "Premium Gold Jewellery Wholesaler. Bridal collections, rings, earrings, necklaces and wholesale jewellery solutions.",
+};
