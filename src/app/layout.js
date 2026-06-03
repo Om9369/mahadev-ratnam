@@ -8,8 +8,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "Mahadev Ratnam Jewellery",
-  description: "Luxury Jewellery Collection",
+  title: "Mahadev Ratnam | Gold Jewellery Wholesaler",
+  description:
+    "Premium Gold Jewellery Wholesaler. Bridal collections, rings, earrings, necklaces and wholesale jewellery solutions.",
 };
 
 export default function RootLayout({ children }) {
@@ -22,9 +23,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-export const metadata = {
-  title: "Mahadev Ratnam | Gold Jewellery Wholesaler",
-  description:
-    "Premium Gold Jewellery Wholesaler. Bridal collections, rings, earrings, necklaces and wholesale jewellery solutions.",
-};
