@@ -187,63 +187,153 @@ export default function Home() {
         </section>
 
         {/* WHY CHOOSE US */}
-        <section className="py-24 px-6 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#b08a32] text-center">
-              Why Choose Us?
-            </h2>
+<section className="py-24 px-6 bg-white">
+  <div className="max-w-7xl mx-auto">
+    <p className="uppercase tracking-[4px] text-xs text-[#b08a32] text-center mb-4">
+      Our Promise
+    </p>
 
-            <div className="grid md:grid-cols-4 gap-6 mt-14 text-center">
-              {[
-                "Trusted Wholesale Partner",
-                "Premium Craftsmanship",
-                "Modern & Traditional Designs",
-                "Direct WhatsApp Enquiry",
-              ].map((item) => (
-                <div key={item} className="border border-[#eadfcc] p-8">
-                  <div className="text-[#b08a32] text-3xl mb-4">✦</div>
-                  <p className="font-serif text-xl">{item}</p>
-                </div>
-              ))}
-            </div>
+    <h2 className="text-4xl md:text-5xl font-serif text-[#3D3127] text-center">
+      Why Choose Us?
+    </h2>
+
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-14">
+      {[
+        {
+          title: "BIS Hallmarked Jewellery",
+          desc: "Purity-focused jewellery crafted for trusted wholesale business.",
+        },
+        {
+          title: "Pan India Wholesale Supply",
+          desc: "Reliable jewellery supply support for retailers across India.",
+        },
+        {
+          title: "Premium Craftsmanship",
+          desc: "Elegant designs made with traditional and modern artistry.",
+        },
+        {
+          title: "Trusted by Retailers",
+          desc: "Built for long-term wholesale relationships and repeat buyers.",
+        },
+      ].map((item) => (
+        <div
+          key={item.title}
+          className="group bg-[#fffaf3] border border-[#eadfcc] p-8 min-h-[230px] rounded-2xl text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-500"
+        >
+          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-white border border-[#d8c5a3] text-[#b08a32] text-3xl group-hover:bg-[#3D3127] group-hover:text-white transition duration-500">
+            ✦
           </div>
-        </section>
 
+          <h3 className="font-serif text-2xl text-[#3D3127]">
+            {item.title}
+          </h3>
+
+          <p className="mt-4 text-gray-600 leading-7 text-sm">
+            {item.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+                {/* SEO CONTENT */}
+<section className="py-20 px-6 bg-[#fffaf3]">
+  <div className="max-w-5xl mx-auto text-center">
+    <p className="uppercase tracking-[4px] text-xs text-[#b08a32] mb-5">
+      Wholesale Jewellery Excellence
+    </p>
+
+    <h2 className="text-4xl md:text-5xl font-serif text-[#3D3127] mb-6">
+      Premium Gold Jewellery Wholesaler in India
+    </h2>
+
+    <p className="text-gray-600 leading-8 text-lg">
+      Mahadev Ratnam is a trusted gold jewellery wholesaler based in India,
+      offering premium rings, earrings, necklaces and bridal jewellery
+      collections for retailers and jewellery businesses. Our designs combine
+      traditional craftsmanship with modern elegance, ensuring exceptional
+      quality, purity and customer satisfaction.
+    </p>
+  </div>
+</section>
         {/* CTA */}
-        <section className="py-20 px-6 bg-[#3D3127] text-white text-center">
-          <h2 className="text-4xl md:text-5xl font-serif">
-            Never Miss A Moment Of Luxury
-          </h2>
+<section className="py-24 px-6 bg-[#fff7ea] text-center border-y border-[#e5c98a]">
+  <h2 className="text-4xl md:text-5xl font-serif text-[#3D3127]">
+    Never Miss A Moment Of Luxury
+  </h2>
 
-          <p className="mt-5 text-gray-300">
-            Connect with us for latest catalogues, pricing and designs.
-          </p>
+  <p className="mt-5 text-[#6b5b4a]">
+    Connect with us for latest catalogues, pricing and designs.
+  </p>
 
-          <a
-            href="https://wa.me/919369895157"
-            target="_blank"
-            className="inline-block mt-8 bg-white text-black px-8 py-4 rounded-full"
-          >
-            WhatsApp Enquiry
-          </a>
-        </section>
+  <a
+    href="https://wa.me/919369895157"
+    target="_blank"
+    className="inline-block mt-8 bg-gradient-to-r from-[#b08a32] to-[#d4af37] text-white px-9 py-4 rounded-full shadow-lg"
+  >
+    WhatsApp Enquiry
+  </a>
+</section>
 
-        {/* FOOTER */}
-        <footer id="contact" className="bg-[#fffaf3] py-16 px-6 text-center">
-          <h2 className="text-4xl font-serif text-[#b08a32]">
-            Mahadev Ratnam
-          </h2>
+{/* FOOTER */}
+<footer id="contact" className="bg-[#fffaf3] text-[#3D3127] px-6">
+  <div className="max-w-7xl mx-auto py-16 grid md:grid-cols-4 gap-10">
 
-          <p className="mt-4 text-gray-600">
-            Premium Gold Jewellery Wholesaler
-          </p>
+    <div>
+      <h2 className="text-3xl font-serif text-[#b08a32]">
+        Mahadev Ratnam
+      </h2>
+      <div className="w-10 h-[1px] bg-[#b08a32] mt-3 mb-5"></div>
+      <p className="text-gray-600 leading-7">
+        Premium Gold Jewellery Wholesaler offering elegant, traditional and
+        modern jewellery collections for retailers.
+      </p>
+    </div>
 
-          <div className="mt-8 space-y-2 text-gray-600">
-            <p>+91 9369895157</p>
-            <p>Lucknow, Uttar Pradesh</p>
-            <p>Gold Jewellery Wholesaler</p>
-          </div>
-        </footer>
+    <div>
+      <h3 className="text-xl font-serif text-[#b08a32] mb-4">
+        Quick Links
+      </h3>
+      <ul className="space-y-3 text-gray-600">
+        <li><a href="#" className="hover:text-[#b08a32]">Home</a></li>
+        <li><a href="#collections" className="hover:text-[#b08a32]">Collections</a></li>
+        <li><a href="#about" className="hover:text-[#b08a32]">About</a></li>
+        <li><a href="/live-rate" className="hover:text-[#b08a32]">Live Gold Rate</a></li>
+        <li><a href="#contact" className="hover:text-[#b08a32]">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 className="text-xl font-serif text-[#b08a32] mb-4">
+        Contact
+      </h3>
+      <div className="space-y-3 text-gray-600">
+        <p>Phone: +91 9369895157</p>
+        <p>WhatsApp: +91 9369895157</p>
+        <p>Email: your-email@gmail.com</p>
+        <p>Lucknow, Uttar Pradesh, India</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 className="text-xl font-serif text-[#b08a32] mb-4">
+        Business Info
+      </h3>
+      <div className="space-y-3 text-gray-600">
+        <p>Gold Jewellery Wholesaler</p>
+        <p>Pan India Wholesale Supply</p>
+        <p>Custom Orders Available</p>
+        <p>Mon - Sat: 10 AM - 7 PM</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div className="border-t border-[#e5c98a] py-6 text-center text-gray-600 text-sm">
+    © 2026 Mahadev Ratnam. All Rights Reserved.
+  </div>
+</footer>
       </main>
     </>
   );
