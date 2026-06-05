@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-
   const links = [
     { name: "Home", href: "/" },
     { name: "Collections", href: "/#collections" },
@@ -16,26 +13,25 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-[9999] bg-[#F4EBDD] border-b border-[#D8C4A3]">
-      <div className="max-w-7xl mx-auto px-5 md:px-10 h-16 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 w-full z-[999999] bg-[#F4EBDD] border-b border-[#D8C4A3]">
+      <input type="checkbox" id="menu-toggle" className="peer hidden" />
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-[#3C2A20]"
-          aria-label="Toggle Menu"
+      <div className="max-w-7xl mx-auto px-4 lg:px-10 h-16 flex items-center justify-between">
+        <label
+          htmlFor="menu-toggle"
+          className="lg:hidden flex items-center justify-center w-12 h-12 text-[#3C2A20] cursor-pointer"
         >
-          {open ? <X size={26} /> : <Menu size={26} />}
-        </button>
+          <Menu size={30} />
+        </label>
 
         <Link
           href="/"
-          onClick={() => setOpen(false)}
-          className="font-serif text-[#3C2A20] text-xl md:text-2xl font-semibold tracking-[0.12em] uppercase"
+          className="font-serif text-[#3C2A20] text-lg lg:text-2xl font-semibold tracking-[0.12em] uppercase"
         >
           Mahadev Ratnam
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-8">
           {links.map((link) => (
             <Link
               key={link.name}
@@ -48,37 +44,33 @@ export default function Navbar() {
 
           <Link
             href="https://wa.me/918417884230"
-            className="font-serif bg-[#B88A44] text-white px-5 py-2 rounded-full tracking-[0.08em] hover:bg-[#9B7134] transition"
+            className="font-serif bg-[#B88A44] text-white px-5 py-2 rounded-full tracking-[0.08em]"
           >
             Enquire
           </Link>
         </div>
       </div>
 
-      {open && (
-        <div className="md:hidden absolute top-16 left-0 w-full bg-[#F4EBDD] border-t border-[#D8C4A3] border-b border-[#D8C4A3] px-6 py-5">
-          <div className="flex flex-col gap-4">
-            {links.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="font-serif text-[#3C2A20] text-base border-b border-[#D8C4A3] pb-3"
-              >
-                {link.name}
-              </Link>
-            ))}
-
+      <div className="hidden peer-checked:block lg:hidden fixed top-16 left-0 w-full z-[999998] bg-[#F4EBDD] border-b border-[#D8C4A3] px-6 py-5 shadow-xl">
+        <div className="flex flex-col gap-4">
+          {links.map((link) => (
             <Link
-              href="https://wa.me/918417884230"
-              onClick={() => setOpen(false)}
-              className="bg-[#B88A44] text-white text-center px-5 py-3 rounded-full font-serif"
+              key={link.name}
+              href={link.href}
+              className="font-serif text-[#3C2A20] text-base border-b border-[#D8C4A3] pb-3"
             >
-              Enquire on WhatsApp
+              {link.name}
             </Link>
-          </div>
+          ))}
+
+          <Link
+            href="https://wa.me/918417884230"
+            className="bg-[#B88A44] text-white text-center px-5 py-3 rounded-full font-serif"
+          >
+            Enquire on WhatsApp
+          </Link>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
