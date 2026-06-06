@@ -4,6 +4,9 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { products } from "@/data/categories";
+import { allProducts } from "@/data/allProducts";
+
+const newArrivals = allProducts.slice(0, 12);
 
 const bestSellers = Object.entries(products);
 
@@ -57,7 +60,149 @@ export default function Home() {
     </div>
   </div>
 </section>
+       {/* FEATURED COLLECTIONS */}
+<section className="relative py-24 px-6 bg-[#120b08] overflow-hidden">
+  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top,#d4af37,transparent_35%)]"></div>
 
+  <div className="relative max-w-7xl mx-auto">
+    <div className="text-center mb-14">
+      <p className="uppercase tracking-[5px] text-xs text-[#d4af37] mb-4">
+        Premium Jewellery Categories
+      </p>
+
+      <h2 className="text-4xl md:text-6xl font-serif text-white">
+        Featured Collections
+      </h2>
+
+      <p className="mt-5 text-[#c9b8a2] max-w-2xl mx-auto">
+        Explore our most elegant jewellery categories crafted for premium wholesale buyers.
+      </p>
+    </div>
+
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
+      {[
+        {
+          title: "Rings",
+          image: "/rings/ladies-ring-1.jpeg",
+          link: "/products/rings",
+        },
+        {
+          title: "Bridal",
+          image: "/bridal/bridal-necklace-1.jpeg",
+          link: "/products/bridal",
+        },
+        {
+          title: "Necklaces",
+          image: "/necklaces/butterfly-necklace-1.jpeg",
+          link: "/products/necklaces",
+        },
+        {
+          title: "Bangles",
+          image: "/bangles/designer-bangle-1.jpeg",
+          link: "/products/bangles",
+        },
+      ].map((item) => (
+        <Link
+          key={item.title}
+          href={item.link}
+          className="group relative block rounded-[2rem] border border-[#d4af37]/40 bg-[#1d120d] p-3 shadow-2xl overflow-hidden"
+        >
+          <div className="relative h-[390px] overflow-hidden rounded-[1.5rem]">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+            <div className="absolute top-4 right-4 h-10 w-10 rounded-full border border-[#d4af37]/70 flex items-center justify-center text-[#d4af37] bg-black/30">
+              ✦
+            </div>
+
+            <div className="absolute bottom-0 left-0 right-0 p-6">
+              <p className="text-xs uppercase tracking-[3px] text-[#d4af37] mb-2">
+                Explore Collection
+              </p>
+
+              <h3 className="text-3xl font-serif text-white">
+                {item.title}
+              </h3>
+
+              <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#d4af37] px-5 py-2 text-sm text-[#120b08] font-medium">
+                View Designs →
+              </span>
+            </div>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+</section>
+{/* NEW ARRIVALS CAROUSEL */}
+<section className="py-24 px-6 bg-[#fffaf3] overflow-hidden">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-14">
+      <p className="uppercase tracking-[5px] text-xs text-[#b08a32] mb-4">
+        Latest Jewellery Designs
+      </p>
+
+      <h2 className="text-4xl md:text-6xl font-serif text-[#3D3127]">
+        New Arrivals
+      </h2>
+
+      <p className="mt-5 text-gray-600 max-w-2xl mx-auto">
+        Freshly added premium jewellery designs for retailers and wholesale buyers.
+      </p>
+    </div>
+
+    <div className="relative overflow-hidden">
+      <motion.div
+        className="flex gap-6 w-max"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{
+          repeat: Infinity,
+          duration: 35,
+          ease: "linear",
+        }}
+      >
+        {[...newArrivals, ...newArrivals].map((product, index) => (
+          <Link
+            key={`${product.id}-${index}`}
+            href={`/products/${product.slug}`}
+            className="group min-w-[280px] md:min-w-[320px] bg-white rounded-[2rem] overflow-hidden border border-[#eadfcc] shadow-sm hover:shadow-2xl transition"
+          >
+            <div className="relative h-[360px] overflow-hidden">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-full w-full object-cover group-hover:scale-110 transition duration-700"
+              />
+
+              <div className="absolute top-4 left-4 bg-[#120b08]/80 text-[#d4af37] text-xs px-4 py-2 rounded-full">
+                New Arrival
+              </div>
+            </div>
+
+            <div className="p-6">
+              <p className="text-xs uppercase tracking-[2px] text-[#b08a32]">
+                {product.subCategory}
+              </p>
+
+              <h3 className="mt-2 text-2xl font-serif text-[#3D3127]">
+                {product.name}
+              </h3>
+
+              <span className="inline-block mt-5 text-[#b08a32] font-medium">
+                View Details →
+              </span>
+            </div>
+          </Link>
+        ))}
+      </motion.div>
+    </div>
+  </div>
+</section>
         {/* BEST SELLER */}
         <section className="py-24 px-6">
           <div className="max-w-7xl mx-auto">
