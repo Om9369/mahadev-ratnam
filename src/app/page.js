@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { products } from "@/data/products";
+import { products } from "@/data/categories";
 
 const bestSellers = Object.entries(products);
 
