@@ -14,7 +14,7 @@ export default function Home() {
 
       <main className="bg-[#fffaf3] text-[#3D3127]">
         {/* HERO */}
-<section className="pt-32 pb-20 px-6 bg-[#fffaf3]">
+<section className="pt-42 pb-20 px-6 bg-[#fffaf3]">
   <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
     <div>
       <p className="uppercase tracking-[5px] text-xs text-[#b08a32] mb-5">
