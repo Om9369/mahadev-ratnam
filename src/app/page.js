@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { products } from "@/data/categories";
 import { allProducts } from "@/data/allProducts";
 
-const newArrivals = allProducts.slice(0, 12);
+const newArrivals = allProducts.slice(0, 8);
 
 const bestSellers = Object.entries(products);
 
@@ -140,10 +140,10 @@ export default function Home() {
   </div>
 </section>
 {/* NEW ARRIVALS CAROUSEL */}
-<section className="py-24 px-6 bg-[#fffaf3] overflow-hidden">
+<section className="py-16 md:py-24 px-4 md:px-6 bg-[#fffaf3] overflow-hidden">
   <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-14">
-      <p className="uppercase tracking-[5px] text-xs text-[#b08a32] mb-4">
+    <div className="text-center mb-10 md:mb-14">
+      <p className="uppercase tracking-[4px] text-[10px] md:text-xs text-[#b08a32] mb-4">
         Latest Jewellery Designs
       </p>
 
@@ -151,18 +151,21 @@ export default function Home() {
         New Arrivals
       </h2>
 
-      <p className="mt-5 text-gray-600 max-w-2xl mx-auto">
+      <p className="mt-4 md:mt-5 text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
         Freshly added premium jewellery designs for retailers and wholesale buyers.
       </p>
     </div>
 
     <div className="relative overflow-hidden">
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10 md:w-24 bg-gradient-to-r from-[#fffaf3] to-transparent"></div>
+      <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 md:w-24 bg-gradient-to-l from-[#fffaf3] to-transparent"></div>
+
       <motion.div
-        className="flex gap-6 w-max"
+        className="flex gap-4 md:gap-6 w-max"
         animate={{ x: ["0%", "-50%"] }}
         transition={{
           repeat: Infinity,
-          duration: 35,
+          duration: 75,
           ease: "linear",
         }}
       >
@@ -170,30 +173,30 @@ export default function Home() {
           <Link
             key={`${product.id}-${index}`}
             href={`/products/${product.slug}`}
-            className="group min-w-[280px] md:min-w-[320px] bg-white rounded-[2rem] overflow-hidden border border-[#eadfcc] shadow-sm hover:shadow-2xl transition"
+            className="group min-w-[220px] sm:min-w-[260px] md:min-w-[320px] bg-white rounded-3xl overflow-hidden border border-[#eadfcc] shadow-sm hover:shadow-2xl transition"
           >
-            <div className="relative h-[360px] overflow-hidden">
+            <div className="relative h-[260px] sm:h-[310px] md:h-[360px] overflow-hidden bg-[#f5ead9]">
               <img
                 src={product.image}
                 alt={product.name}
                 className="h-full w-full object-cover group-hover:scale-110 transition duration-700"
               />
 
-              <div className="absolute top-4 left-4 bg-[#120b08]/80 text-[#d4af37] text-xs px-4 py-2 rounded-full">
+              <div className="absolute top-3 left-3 md:top-4 md:left-4 bg-[#120b08]/80 text-[#d4af37] text-[10px] md:text-xs px-3 md:px-4 py-2 rounded-full">
                 New Arrival
               </div>
             </div>
 
-            <div className="p-6">
-              <p className="text-xs uppercase tracking-[2px] text-[#b08a32]">
+            <div className="p-4 md:p-6">
+              <p className="text-[10px] md:text-xs uppercase tracking-[2px] text-[#b08a32] line-clamp-1">
                 {product.subCategory}
               </p>
 
-              <h3 className="mt-2 text-2xl font-serif text-[#3D3127]">
+              <h3 className="mt-2 text-xl md:text-2xl font-serif text-[#3D3127] line-clamp-1">
                 {product.name}
               </h3>
 
-              <span className="inline-block mt-5 text-[#b08a32] font-medium">
+              <span className="inline-block mt-4 md:mt-5 text-sm md:text-base text-[#b08a32] font-medium">
                 View Details →
               </span>
             </div>
