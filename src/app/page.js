@@ -141,94 +141,95 @@ export default function Home() {
         </section>
 
         {/* NEW ARRIVALS */}
-        <section className="py-16 md:py-24 px-4 md:px-6 bg-[#fffaf3] overflow-hidden">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10 md:mb-14">
-              <p className="uppercase tracking-[4px] text-[10px] md:text-xs text-[#b08a32] mb-4">
-                Latest Jewellery Designs
-              </p>
+<section className="py-14 md:py-24 px-4 md:px-6 bg-[#fffaf3] overflow-hidden">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-8 md:mb-14">
+      <p className="uppercase tracking-[3px] md:tracking-[4px] text-[10px] md:text-xs text-[#b08a32] mb-3">
+        Latest Jewellery Designs
+      </p>
 
-              <h2 className="text-4xl md:text-6xl font-serif text-[#3D3127]">
-                New Arrivals
-              </h2>
+      <h2 className="text-4xl md:text-6xl font-serif text-[#3D3127]">
+        New Arrivals
+      </h2>
 
-              <p className="mt-4 md:mt-5 text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-                Freshly added premium jewellery designs for retailers and wholesale buyers.
-              </p>
-            </div>
+      <p className="mt-3 md:mt-5 text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-6">
+        Freshly added premium jewellery designs for retailers and wholesale buyers.
+      </p>
+    </div>
 
-           {/* Mobile Horizontal Scroll */}
-<div className="md:hidden flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory">
-  {newArrivals.map((product) => (
-    <Link
-      key={product.id}
-      href={`/products/${product.slug}`}
-      className="snap-start min-w-[64%] bg-white rounded-2xl overflow-hidden border border-[#eadfcc] shadow-sm"
-    >
-      <img
-        src={product.image}
-        alt={product.name}
-        className="h-[200px] w-full object-cover"
-      />
+    {/* Mobile Grid */}
+    <div className="grid grid-cols-2 gap-3 md:hidden">
+      {newArrivals.slice(0, 6).map((product) => (
+        <Link
+          key={product.id}
+          href={`/products/${product.slug}`}
+          className="bg-white rounded-2xl overflow-hidden border border-[#eadfcc] shadow-sm"
+        >
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-[145px] w-full object-cover"
+          />
 
-      <div className="p-3">
-        <p className="text-[9px] uppercase tracking-[1.5px] text-[#b08a32] line-clamp-1">
-          {product.subCategory}
-        </p>
+          <div className="p-3">
+            <p className="text-[8px] uppercase tracking-[1.5px] text-[#b08a32] truncate">
+              {product.subCategory}
+            </p>
 
-        <h3 className="mt-1 text-lg font-serif text-[#3D3127] line-clamp-1">
-          {product.name}
-        </h3>
+            <h3 className="mt-1 text-base font-serif text-[#3D3127] truncate">
+              {product.name}
+            </h3>
 
-        <span className="inline-block mt-3 text-xs text-[#b08a32] font-medium">
-          View Details →
-        </span>
-      </div>
-    </Link>
-  ))}
-</div>
-            {/* Desktop Moving Carousel */}
-            <div className="hidden md:block relative overflow-hidden">
-              <motion.div
-                className="flex gap-6 w-max"
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 95,
-                  ease: "linear",
-                }}
-              >
-                {[...newArrivals, ...newArrivals].map((product, index) => (
-                  <Link
-                    key={`${product.id}-${index}`}
-                    href={`/products/${product.slug}`}
-                    className="group min-w-[320px] bg-white rounded-3xl overflow-hidden border border-[#eadfcc] shadow-sm hover:shadow-2xl transition"
-                  >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="h-[360px] w-full object-cover group-hover:scale-110 transition duration-700"
-                    />
-
-                    <div className="p-6">
-                      <p className="text-xs uppercase tracking-[2px] text-[#b08a32]">
-                        {product.subCategory}
-                      </p>
-
-                      <h3 className="mt-2 text-2xl font-serif text-[#3D3127]">
-                        {product.name}
-                      </h3>
-
-                      <span className="inline-block mt-5 text-[#b08a32] font-medium">
-                        View Details →
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </motion.div>
-            </div>
+            <span className="inline-block mt-2 text-[11px] text-[#b08a32] font-medium">
+              View →
+            </span>
           </div>
-        </section>
+        </Link>
+      ))}
+    </div>
+
+    {/* Desktop Moving Carousel */}
+    <div className="hidden md:block relative overflow-hidden">
+      <motion.div
+        className="flex gap-6 w-max"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{
+          repeat: Infinity,
+          duration: 95,
+          ease: "linear",
+        }}
+      >
+        {[...newArrivals, ...newArrivals].map((product, index) => (
+          <Link
+            key={`${product.id}-${index}`}
+            href={`/products/${product.slug}`}
+            className="group min-w-[320px] bg-white rounded-3xl overflow-hidden border border-[#eadfcc] shadow-sm hover:shadow-2xl transition"
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="h-[360px] w-full object-cover group-hover:scale-110 transition duration-700"
+            />
+
+            <div className="p-6">
+              <p className="text-xs uppercase tracking-[2px] text-[#b08a32]">
+                {product.subCategory}
+              </p>
+
+              <h3 className="mt-2 text-2xl font-serif text-[#3D3127]">
+                {product.name}
+              </h3>
+
+              <span className="inline-block mt-5 text-[#b08a32] font-medium">
+                View Details →
+              </span>
+            </div>
+          </Link>
+        ))}
+      </motion.div>
+    </div>
+  </div>
+</section>
 
         {/* BEST SELLER */}
         <section className="py-16 md:py-24 px-4 md:px-6">
