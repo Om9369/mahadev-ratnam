@@ -49,36 +49,50 @@ export default function AddProductPage() {
   };
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    try {
-      setUploading(true);
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-      const filePath = `products/${fileName}`;
+  try {
+    setUploading(true);
 
-      const { error: uploadError } = await supabase.storage
-        .from("product-images")
-        .upload(filePath, file);
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2)}.${fileExt}`;
 
-      if (uploadError) {
-        throw uploadError;
-      }
+    const filePath = `products/${fileName}`;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from("product-images")
-        .getPublicUrl(filePath);
+    const { data, error: uploadError } = await supabase.storage
+      .from("product-images")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type,
+      });
 
-      setForm((prev) => ({ ...prev, image: publicUrl }));
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Error uploading image: " + error.message);
-    } finally {
-      setUploading(false);
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      alert(uploadError.message);
+      return;
     }
-  };
 
+    const { data: publicData } = supabase.storage
+      .from("product-images")
+      .getPublicUrl(data.path);
+
+    setForm((prev) => ({
+      ...prev,
+      image: publicData.publicUrl,
+    }));
+
+    alert("Image uploaded successfully!");
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    alert("Error uploading image: " + error.message);
+  } finally {
+    setUploading(false);
+  }
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
 
