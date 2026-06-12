@@ -83,15 +83,10 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top announcement bar */}
-      <div className="fixed top-0 left-0 w-full z-50 bg-[#0F0A06] text-center py-2 px-4">
-        <p className="text-[10px] md:text-xs tracking-[3px] uppercase text-[#C9A84C] font-sans font-medium">
-          ✦ Premium Gold Jewellery Wholesaler — Pan India Supply &nbsp;|&nbsp; Call: +91 93698 95157 ✦
-        </p>
-      </div>
+      
 
       {/* Main Navbar */}
-      <nav className={`fixed top-8 left-0 w-full z-40 transition-all duration-500 ${
+      <nav className={`fixed top-0 left-0 w-full z-40 transition-all duration-500 ${
         scrolled
           ? "bg-[#0F0A06]/97 backdrop-blur-xl shadow-2xl border-b border-[#C9A84C]/20"
           : "bg-[#0F0A06]/90 backdrop-blur-md border-b border-[#C9A84C]/10"
