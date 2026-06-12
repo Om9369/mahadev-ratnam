@@ -3,509 +3,508 @@
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { products } from "@/data/categories";
+import { useState, useEffect } from "react";
 import { allProducts } from "@/data/allProducts";
 
-const newArrivals = allProducts.slice(0, 8);
-const bestSellers = Object.entries(products);
+const staticArrivals = allProducts.slice(0, 10);
+
+const collections = [
+  { title: "Rings", sub: "Ladies, Men's & Engagement", image: "/rings/ladies-ring-1.jpeg", href: "/products/rings" },
+  { title: "Bridal Sets", sub: "Complete Bridal Jewellery", image: "/bridal/bridal-necklace-1.jpeg", href: "/products/bridal" },
+  { title: "Necklaces", sub: "Floral, Temple & Diamond", image: "/necklaces/butterfly-necklace-1.jpeg", href: "/products/necklaces" },
+  { title: "Bangles", sub: "Designer & Traditional", image: "/bangles/designer-bangle-1.jpeg", href: "/products/bangles" },
+];
+
+const whyUs = [
+  { icon: "✦", title: "BIS Hallmarked", desc: "Every design is purity-certified with BIS hallmark for trusted wholesale supply." },
+  { icon: "◈", title: "Pan India Delivery", desc: "Reliable supply chain supporting jewellery retailers and wholesalers across India." },
+  { icon: "❋", title: "Master Craftsmen", desc: "Each piece crafted by traditional artisans blending heritage techniques with modern design." },
+  { icon: "◎", title: "5000+ Retailers", desc: "Trusted by over 5,000 retail partners who choose Mahadev Ratnam for consistent quality." },
+];
+
+const stats = [
+  { num: "15+", label: "Years Experience" },
+  { num: "5000+", label: "Retail Partners" },
+  { num: "200+", label: "Designs in Catalogue" },
+  { num: "18K & 22K", label: "Certified Purity" },
+];
 
 export default function Home() {
+  const [newArrivals, setNewArrivals] = useState(staticArrivals);
+
+  useEffect(() => {
+    async function loadNewArrivals() {
+      try {
+        const res = await fetch("/api/inventory");
+        const data = await res.json();
+        if (data.success && data.products && data.products.length > 0) {
+          setNewArrivals(data.products.slice(0, 10));
+        }
+      } catch (err) {
+        console.error("Failed to load new arrivals from Supabase:", err);
+      }
+    }
+    loadNewArrivals();
+  }, []);
+
   return (
     <>
       <Navbar />
 
-      <main className="bg-[#fffaf3] text-[#3D3127] overflow-hidden">
-        {/* HERO */}
-        <section className="pt-32 md:pt-40 pb-14 md:pb-20 px-4 md:px-6 bg-[#fffaf3]">
-          <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-12 items-center">
-            <div className="text-center md:text-left">
-              <p className="uppercase tracking-[3px] md:tracking-[5px] text-[10px] md:text-xs text-[#b08a32] mb-4 md:mb-5">
-                Mahadev Ratnam Jewellery
-              </p>
+      <main className="bg-[#FCF8F3] text-[#2D2219] overflow-hidden">
 
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif leading-tight text-[#3D3127]">
-                Crafted For Generations. Designed For Royalty.
+        {/* ─── HERO ─────────────────────────────────────────── */}
+        <section className="relative min-h-screen flex items-center bg-[#0F0A06] overflow-hidden pt-28">
+          {/* Background texture */}
+          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_#C9A84C_0%,_transparent_60%)]" />
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_bottom_left,_#C9A84C_0%,_transparent_50%)]" />
+
+          {/* Grid lines */}
+          <div className="absolute inset-0 opacity-[0.04]"
+            style={{ backgroundImage: "linear-gradient(#C9A84C 1px, transparent 1px), linear-gradient(90deg, #C9A84C 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
+
+          <div className="relative max-w-7xl mx-auto px-5 lg:px-10 w-full grid lg:grid-cols-2 gap-16 items-center py-16">
+            {/* Left — Text */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
+            >
+              <div className="flex items-center gap-3 mb-7">
+                <div className="w-8 h-[1px] bg-[#C9A84C]" />
+                <span className="text-[#C9A84C] text-[10px] md:text-xs tracking-[4px] uppercase font-sans font-semibold">Mahadev Ratnam Jewellery</span>
+              </div>
+
+              <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-[1.08] tracking-tight">
+                Crafted For<br />
+                <span className="gold-shimmer">Generations.</span><br />
+                <span className="text-[#F3EAD8]">Worn With</span><br />
+                <span className="gold-shimmer">Royalty.</span>
               </h1>
 
-              <p className="mt-5 md:mt-6 text-gray-600 text-base md:text-lg leading-7 md:leading-8">
-                Discover premium gold jewellery collections crafted with tradition,
-                luxury and trust for retailers and wholesale buyers.
+              <p className="mt-7 text-[#A89880] leading-8 text-sm md:text-base font-sans max-w-md">
+                Discover premium gold jewellery collections crafted with tradition, luxury and trust — made for retailers and wholesale buyers across India.
               </p>
 
-              <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <a
-                  href="#collections"
-                  className="bg-[#3D3127] text-white px-7 py-4 rounded-full text-center"
-                >
-                  Explore Collection
+              <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                <a href="#collections" className="btn-gold px-8 py-4 rounded-full text-sm text-center inline-block">
+                  Explore Collections
                 </a>
-
                 <a
                   href="https://wa.me/919369895157"
                   target="_blank"
-                  className="border border-[#3D3127] px-7 py-4 rounded-full text-center"
+                  rel="noopener noreferrer"
+                  className="border border-[#C9A84C]/40 text-[#E8C97A] hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 px-8 py-4 rounded-full text-sm text-center transition-all duration-300 font-sans font-semibold"
                 >
                   WhatsApp Enquiry
                 </a>
               </div>
-            </div>
 
-            <div className="border border-[#c9a24d] rounded-t-full overflow-hidden">
-              <img
-                src="/images/hero-main.jpg"
-                alt="Mahadev Ratnam Jewellery"
-                className="w-full h-[420px] md:h-[600px] object-cover block"
-              />
-            </div>
-          </div>
-        </section>
+              {/* Stats row */}
+              <div className="mt-14 grid grid-cols-4 gap-4 border-t border-[#C9A84C]/15 pt-8">
+                {stats.map((s) => (
+                  <div key={s.num}>
+                    <div className="font-serif text-xl md:text-2xl text-[#C9A84C]">{s.num}</div>
+                    <div className="text-[10px] text-[#7A6650] mt-1 leading-4 font-sans">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
 
-        {/* FEATURED COLLECTIONS */}
-        <section className="relative py-16 md:py-24 px-4 md:px-6 bg-[#120b08] overflow-hidden">
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top,#d4af37,transparent_35%)]"></div>
+            {/* Right — Hero image */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
+              className="relative hidden lg:block"
+            >
+              {/* Outer decorative frame */}
+              <div className="absolute -inset-4 border border-[#C9A84C]/20 rounded-[2.5rem]" />
+              <div className="absolute -inset-8 border border-[#C9A84C]/10 rounded-[3rem]" />
 
-          <div className="relative max-w-7xl mx-auto">
-            <div className="text-center mb-10 md:mb-14">
-              <p className="uppercase tracking-[4px] md:tracking-[5px] text-[10px] md:text-xs text-[#d4af37] mb-4">
-                Premium Jewellery Categories
-              </p>
+              <div className="relative rounded-[2rem] overflow-hidden border border-[#C9A84C]/30 shadow-2xl">
+                <img
+                  src="/images/hero-main.jpg"
+                  alt="Mahadev Ratnam Premium Jewellery"
+                  className="w-full h-[580px] object-cover"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F0A06]/60 via-transparent to-transparent" />
 
-              <h2 className="text-4xl md:text-6xl font-serif text-white">
-                Featured Collections
-              </h2>
-
-              <p className="mt-4 md:mt-5 text-sm md:text-base text-[#c9b8a2] max-w-2xl mx-auto">
-                Explore our most elegant jewellery categories crafted for premium wholesale buyers.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-7">
-              {[
-                {
-                  title: "Rings",
-                  image: "/rings/ladies-ring-1.jpeg",
-                  link: "/products/rings",
-                },
-                {
-                  title: "Bridal",
-                  image: "/bridal/bridal-necklace-1.jpeg",
-                  link: "/products/bridal",
-                },
-                {
-                  title: "Necklaces",
-                  image: "/necklaces/butterfly-necklace-1.jpeg",
-                  link: "/products/necklaces",
-                },
-                {
-                  title: "Bangles",
-                  image: "/bangles/designer-bangle-1.jpeg",
-                  link: "/products/bangles",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.title}
-                  href={item.link}
-                  className="group relative block rounded-[1.5rem] md:rounded-[2rem] border border-[#d4af37]/40 bg-[#1d120d] p-2 md:p-3 shadow-2xl overflow-hidden"
-                >
-                  <div className="relative h-[300px] md:h-[390px] overflow-hidden rounded-[1.2rem] md:rounded-[1.5rem]">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
-                    />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-
-                    <div className="absolute top-4 right-4 h-9 w-9 md:h-10 md:w-10 rounded-full border border-[#d4af37]/70 flex items-center justify-center text-[#d4af37] bg-black/30">
-                      ✦
+                {/* Floating card */}
+                <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-5 py-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans">Premium Quality</p>
+                      <p className="text-white font-serif text-lg mt-0.5">BIS Hallmarked Gold</p>
                     </div>
-
-                    <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                      <p className="text-[10px] md:text-xs uppercase tracking-[2px] md:tracking-[3px] text-[#d4af37] mb-2">
-                        Explore Collection
-                      </p>
-
-                      <h3 className="text-2xl md:text-3xl font-serif text-white">
-                        {item.title}
-                      </h3>
-
-                      <span className="mt-4 md:mt-5 inline-flex items-center gap-2 rounded-full bg-[#d4af37] px-4 md:px-5 py-2 text-xs md:text-sm text-[#120b08] font-medium">
-                        View Designs →
-                      </span>
+                    <div className="text-right">
+                      <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans">Available In</p>
+                      <p className="text-white font-serif text-lg mt-0.5">18K & 22K</p>
                     </div>
                   </div>
-                </Link>
-              ))}
-            </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
-        {/* NEW ARRIVALS */}
-<section className="py-14 md:py-24 px-4 md:px-6 bg-[#fffaf3] overflow-hidden">
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-8 md:mb-14">
-      <p className="uppercase tracking-[3px] md:tracking-[4px] text-[10px] md:text-xs text-[#b08a32] mb-3">
-        Latest Jewellery Designs
-      </p>
-
-      <h2 className="text-4xl md:text-6xl font-serif text-[#3D3127]">
-        New Arrivals
-      </h2>
-
-      <p className="mt-3 md:mt-5 text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-6">
-        Freshly added premium jewellery designs for retailers and wholesale buyers.
-      </p>
-    </div>
-
-    {/* Mobile Grid */}
-    <div className="grid grid-cols-2 gap-3 md:hidden">
-      {newArrivals.slice(0, 6).map((product) => (
-        <Link
-          key={product.id}
-          href={`/products/${product.slug}`}
-          className="bg-white rounded-2xl overflow-hidden border border-[#eadfcc] shadow-sm"
-        >
-          <img
-            src={product.image}
-            alt={product.name}
-            className="h-[145px] w-full object-cover"
-          />
-
-          <div className="p-3">
-            <p className="text-[8px] uppercase tracking-[1.5px] text-[#b08a32] truncate">
-              {product.subCategory}
-            </p>
-
-            <h3 className="mt-1 text-base font-serif text-[#3D3127] truncate">
-              {product.name}
-            </h3>
-
-            <span className="inline-block mt-2 text-[11px] text-[#b08a32] font-medium">
-              View →
-            </span>
-          </div>
-        </Link>
-      ))}
-    </div>
-
-    {/* Desktop Moving Carousel */}
-    <div className="hidden md:block relative overflow-hidden">
-      <motion.div
-        className="flex gap-6 w-max"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{
-          repeat: Infinity,
-          duration: 95,
-          ease: "linear",
-        }}
-      >
-        {[...newArrivals, ...newArrivals].map((product, index) => (
-          <Link
-            key={`${product.id}-${index}`}
-            href={`/products/${product.slug}`}
-            className="group min-w-[320px] bg-white rounded-3xl overflow-hidden border border-[#eadfcc] shadow-sm hover:shadow-2xl transition"
-          >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="h-[360px] w-full object-cover group-hover:scale-110 transition duration-700"
-            />
-
-            <div className="p-6">
-              <p className="text-xs uppercase tracking-[2px] text-[#b08a32]">
-                {product.subCategory}
-              </p>
-
-              <h3 className="mt-2 text-2xl font-serif text-[#3D3127]">
-                {product.name}
-              </h3>
-
-              <span className="inline-block mt-5 text-[#b08a32] font-medium">
-                View Details →
-              </span>
-            </div>
-          </Link>
-        ))}
-      </motion.div>
-    </div>
-  </div>
-</section>
-
-        {/* BEST SELLER */}
-        <section className="py-16 md:py-24 px-4 md:px-6">
+        {/* ─── FEATURED COLLECTIONS ─────────────────────────── */}
+        <section id="collections" className="py-20 md:py-28 px-5 lg:px-10 bg-[#0F0A06]">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between gap-6 mb-10 md:mb-12">
-              <div>
-                <h2 className="text-4xl md:text-5xl font-serif text-[#b08a32]">
-                  Best Seller
-                </h2>
-
-                <p className="mt-4 text-gray-600 max-w-2xl">
-                  Explore our most loved jewellery designs crafted for elegance,
-                  trust and wholesale excellence.
-                </p>
+            <div className="text-center mb-14">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-12 h-[1px] bg-[#C9A84C]/40" />
+                <span className="text-[#C9A84C] text-[10px] tracking-[5px] uppercase font-sans font-semibold">Premium Collections</span>
+                <div className="w-12 h-[1px] bg-[#C9A84C]/40" />
               </div>
-
-              <a
-                href="#collections"
-                className="self-start border border-[#3D3127] px-6 py-3 rounded-full text-sm"
-              >
-                Discover Full Collection →
-              </a>
+              <h2 className="font-serif text-4xl md:text-6xl text-white">Featured Collections</h2>
+              <p className="mt-4 text-[#8A7560] text-sm md:text-base font-sans max-w-xl mx-auto leading-7">
+                Explore our finest jewellery collections crafted for premium wholesale buyers.
+              </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {bestSellers.map(([slug, item]) => (
-                <div
-                  key={slug}
-                  className="bg-white border border-[#eadfcc] p-3 group rounded-2xl overflow-hidden"
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {collections.map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.12 }}
                 >
-                  <Link href={`/products/${slug}`}>
-                    <div className="overflow-hidden rounded-xl">
+                  <Link
+                    href={item.href}
+                    className="group relative block rounded-[1.8rem] overflow-hidden border border-[#C9A84C]/25 bg-[#1A1008] hover:border-[#C9A84C]/60 transition-all duration-500 shadow-xl hover:shadow-[0_8px_40px_rgba(201,168,76,0.15)]"
+                  >
+                    <div className="relative h-[340px] md:h-[400px] overflow-hidden">
                       <img
                         src={item.image}
-                        alt={item.name}
-                        className="h-60 md:h-72 w-full object-cover group-hover:scale-110 transition duration-700"
+                        alt={item.title}
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F0A06]/90 via-[#0F0A06]/20 to-transparent" />
+
+                      {/* Top badge */}
+                      <div className="absolute top-4 right-4 w-9 h-9 rounded-full border border-[#C9A84C]/60 flex items-center justify-center text-[#C9A84C] text-sm bg-black/30 backdrop-blur-sm group-hover:bg-[#C9A84C] group-hover:text-black transition-all duration-300">
+                        ✦
+                      </div>
+
+                      {/* Bottom text */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans mb-2">{item.sub}</p>
+                        <h3 className="font-serif text-2xl md:text-3xl text-white">{item.title}</h3>
+                        <span className="mt-4 inline-flex items-center gap-2 bg-[#C9A84C] text-[#0F0A06] px-5 py-2 rounded-full text-xs font-sans font-bold tracking-wide group-hover:bg-[#E8C97A] transition-colors duration-300">
+                          Explore Designs →
+                        </span>
+                      </div>
                     </div>
-
-                    <h3 className="mt-4 text-xl font-serif">{item.name}</h3>
-                    <p className="text-sm text-gray-500">{item.category}</p>
                   </Link>
-
-                  <a
-                    href="https://wa.me/919369895157"
-                    target="_blank"
-                    className="inline-block mt-4 text-sm text-[#b08a32]"
-                  >
-                    Enquire →
-                  </a>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* DESIGN SECTION */}
-        <section id="about" className="py-16 md:py-20 px-4 md:px-6 bg-white">
-          <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
-            <img
-              src="/images/bridal-collection.jpg"
-              alt="Design"
-              className="w-full h-[360px] md:h-[520px] object-cover rounded-3xl"
-            />
-
-            <div className="text-center md:text-left">
-              <h2 className="text-4xl md:text-5xl font-serif text-[#b08a32]">
-                Designs Beyond Imagination
-              </h2>
-
-              <p className="mt-6 text-gray-600 leading-8">
-                At Mahadev Ratnam, we redefine elegance with jewellery that
-                blends Indian tradition with modern artistry.
-              </p>
-
-              <ul className="mt-8 space-y-4 text-gray-700 text-left">
-                <li>1. Unique craftsmanship for premium jewellery retailers.</li>
-                <li>2. Modern and traditional collections for every occasion.</li>
-                <li>3. Wholesale-focused designs with direct enquiry support.</li>
-              </ul>
-
-              <a
-                href="https://wa.me/919369895157"
-                target="_blank"
-                className="inline-block mt-8 border-b border-[#3D3127]"
-              >
-                Discover Extraordinary Designs →
-              </a>
+        {/* ─── NEW ARRIVALS ─────────────────────────────────── */}
+        <section className="py-20 md:py-28 bg-[#FCF8F3] overflow-hidden">
+          <div className="max-w-7xl mx-auto px-5 lg:px-10 mb-12 text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-[1px] bg-[#C9A84C]/40" />
+              <span className="text-[#C9A84C] text-[10px] tracking-[5px] uppercase font-sans font-semibold">Fresh Designs</span>
+              <div className="w-12 h-[1px] bg-[#C9A84C]/40" />
             </div>
+            <h2 className="font-serif text-4xl md:text-6xl text-[#2D2219]">New Arrivals</h2>
+            <p className="mt-4 text-[#7A6650] text-sm md:text-base font-sans max-w-xl mx-auto leading-7">
+              Freshly added premium jewellery designs for retailers and wholesale buyers.
+            </p>
           </div>
-        </section>
 
-        {/* SHOP BY CATEGORY */}
-        <section id="collections" className="py-16 md:py-24 px-4 md:px-6">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#b08a32] mb-10 md:mb-12 text-center md:text-left">
-              Shop by Category
-            </h2>
+          {/* Mobile grid */}
+          <div className="grid grid-cols-2 gap-3 px-4 md:hidden">
+            {newArrivals.slice(0, 6).map((product) => (
+              <Link
+                key={product.id}
+                href={`/products/${product.slug}`}
+                className="bg-white rounded-2xl overflow-hidden border border-[#E8D8B8] shadow-sm hover:shadow-md transition-shadow"
+              >
+                <img src={product.image} alt={product.name} className="h-[150px] w-full object-cover" />
+                <div className="p-3">
+                  <p className="text-[9px] uppercase tracking-[2px] text-[#C9A84C] font-sans font-semibold truncate">{product.subCategory}</p>
+                  <h3 className="mt-1 text-sm font-serif text-[#2D2219] truncate">{product.name}</h3>
+                  <span className="inline-block mt-2 text-[10px] text-[#C9A84C] font-sans font-semibold">View →</span>
+                </div>
+              </Link>
+            ))}
+          </div>
 
-            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-              {Object.entries(products).map(([slug, product]) => (
+          {/* Desktop auto-scrolling carousel */}
+          <div className="hidden md:block relative overflow-hidden">
+            {/* Fade masks */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#FCF8F3] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#FCF8F3] to-transparent z-10 pointer-events-none" />
+
+            <motion.div
+              className="flex gap-5 w-max px-16"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+            >
+              {[...newArrivals, ...newArrivals].map((product, index) => (
                 <Link
-                  key={slug}
-                  href={`/products/${slug}`}
-                  className="group bg-white border border-[#d8c5a3] overflow-hidden rounded-3xl md:rounded-t-full text-center"
+                  key={`${product.id}-${index}`}
+                  href={`/products/${product.slug}`}
+                  className="group min-w-[280px] bg-white rounded-3xl overflow-hidden border border-[#E8D8B8] shadow-md hover:shadow-xl hover:border-[#C9A84C]/40 transition-all duration-500"
                 >
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-64 md:h-80 w-full object-cover group-hover:scale-110 transition duration-700"
-                  />
-
-                  <div className="p-6 md:p-8">
-                    <h3 className="text-2xl md:text-3xl font-serif text-[#b08a32]">
-                      {product.name}
-                    </h3>
-
-                    <p className="mt-3 text-gray-600">{product.category}</p>
-
-                    <span className="inline-block mt-6 border border-[#b08a32] px-6 py-2 rounded-full text-sm">
-                      Explore →
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-[300px] w-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                  <div className="p-5">
+                    <p className="text-[10px] uppercase tracking-[2.5px] text-[#C9A84C] font-sans font-semibold">{product.subCategory}</p>
+                    <h3 className="mt-2 text-xl font-serif text-[#2D2219]">{product.name}</h3>
+                    <span className="inline-block mt-4 text-[#C9A84C] font-sans text-sm font-semibold group-hover:gap-2 transition-all">
+                      View Details →
                     </span>
                   </div>
                 </Link>
               ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ─── ABOUT / DESIGN STORY ─────────────────────────── */}
+        <section className="py-20 md:py-28 px-5 lg:px-10 bg-white">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
+            {/* Image collage */}
+            <div className="relative">
+              <img
+                src="/images/bridal-collection.jpg"
+                alt="Mahadev Ratnam Craftsmanship"
+                className="w-full h-[420px] md:h-[520px] object-cover rounded-3xl shadow-xl"
+              />
+              {/* Floating accent card */}
+              <div className="absolute -bottom-6 -right-4 md:right-6 bg-[#0F0A06] border border-[#C9A84C]/40 rounded-2xl p-5 shadow-2xl max-w-[200px]">
+                <div className="text-[#C9A84C] text-3xl font-serif font-bold">15+</div>
+                <div className="text-[#E8C97A] text-xs font-sans mt-1 leading-5">Years of Trusted Jewellery Excellence</div>
+              </div>
+              {/* Gold accent dot */}
+              <div className="absolute -top-4 -left-4 w-20 h-20 rounded-full border-2 border-[#C9A84C]/30 flex items-center justify-center text-[#C9A84C] text-2xl">
+                ✦
+              </div>
+            </div>
+
+            {/* Text */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-8 h-[1px] bg-[#C9A84C]" />
+                <span className="text-[#C9A84C] text-[10px] tracking-[4px] uppercase font-sans font-semibold">Our Story</span>
+              </div>
+
+              <h2 className="font-serif text-4xl md:text-5xl text-[#2D2219] leading-tight">
+                Designs Beyond<br />
+                <span className="gold-text-gradient">Imagination</span>
+              </h2>
+
+              <p className="mt-6 text-[#7A6650] leading-8 font-sans text-sm md:text-base">
+                At Mahadev Ratnam, we redefine elegance with jewellery that blends India's rich heritage with contemporary artistry. Every piece is a testament to our unwavering commitment to purity, precision, and premium craftsmanship.
+              </p>
+
+              <ul className="mt-8 space-y-4">
+                {[
+                  "Unique craftsmanship for premium jewellery retailers",
+                  "Modern and traditional collections for every occasion",
+                  "Wholesale-focused designs with direct enquiry support",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-[#5A4A38] font-sans text-sm leading-6">
+                    <span className="text-[#C9A84C] mt-0.5 text-lg shrink-0">✦</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-10 flex gap-4">
+                <a
+                  href="https://wa.me/919369895157"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-gold px-7 py-3.5 rounded-full text-sm"
+                >
+                  Enquire on WhatsApp
+                </a>
+                <Link
+                  href="/products"
+                  className="btn-dark px-7 py-3.5 rounded-full text-sm"
+                >
+                  View Catalogue
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* WHY CHOOSE US */}
-        <section className="py-16 md:py-24 px-4 md:px-6 bg-white">
+        {/* ─── WHY CHOOSE US ────────────────────────────────── */}
+        <section className="py-20 md:py-28 px-5 lg:px-10 bg-[#FCF8F3]">
           <div className="max-w-7xl mx-auto">
-            <p className="uppercase tracking-[4px] text-xs text-[#b08a32] text-center mb-4">
-              Our Promise
-            </p>
+            <div className="text-center mb-14">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-12 h-[1px] bg-[#C9A84C]/40" />
+                <span className="text-[#C9A84C] text-[10px] tracking-[5px] uppercase font-sans font-semibold">Our Promise</span>
+                <div className="w-12 h-[1px] bg-[#C9A84C]/40" />
+              </div>
+              <h2 className="font-serif text-4xl md:text-6xl text-[#2D2219]">Why Choose Us?</h2>
+            </div>
 
-            <h2 className="text-4xl md:text-5xl font-serif text-[#3D3127] text-center">
-              Why Choose Us?
-            </h2>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-10 md:mt-14">
-              {[
-                {
-                  title: "BIS Hallmarked Jewellery",
-                  desc: "Purity-focused jewellery crafted for trusted wholesale business.",
-                },
-                {
-                  title: "Pan India Wholesale Supply",
-                  desc: "Reliable jewellery supply support for retailers across India.",
-                },
-                {
-                  title: "Premium Craftsmanship",
-                  desc: "Elegant designs made with traditional and modern artistry.",
-                },
-                {
-                  title: "Trusted by Retailers",
-                  desc: "Built for long-term wholesale relationships and repeat buyers.",
-                },
-              ].map((item) => (
-                <div
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {whyUs.map((item, i) => (
+                <motion.div
                   key={item.title}
-                  className="group bg-[#fffaf3] border border-[#eadfcc] p-7 md:p-8 min-h-[220px] md:min-h-[230px] rounded-2xl text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-500"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="group bg-white border border-[#E8D8B8] hover:border-[#C9A84C]/40 rounded-2xl p-7 text-center card-glow transition-all duration-500 hover:-translate-y-2"
                 >
-                  <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-white border border-[#d8c5a3] text-[#b08a32] text-3xl group-hover:bg-[#3D3127] group-hover:text-white transition duration-500">
-                    ✦
+                  <div className="mx-auto mb-6 w-14 h-14 rounded-full border border-[#E8D8B8] flex items-center justify-center text-[#C9A84C] text-2xl bg-[#FCF8F3] group-hover:bg-[#C9A84C] group-hover:text-white group-hover:border-[#C9A84C] transition-all duration-500">
+                    {item.icon}
                   </div>
-
-                  <h3 className="font-serif text-2xl text-[#3D3127]">
-                    {item.title}
-                  </h3>
-
-                  <p className="mt-4 text-gray-600 leading-7 text-sm">
-                    {item.desc}
-                  </p>
-                </div>
+                  <h3 className="font-serif text-xl text-[#2D2219]">{item.title}</h3>
+                  <p className="mt-3 text-[#7A6650] text-sm font-sans leading-6">{item.desc}</p>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* SEO CONTENT */}
-        <section className="py-16 md:py-20 px-4 md:px-6 bg-[#fffaf3]">
-          <div className="max-w-5xl mx-auto text-center">
-            <p className="uppercase tracking-[4px] text-xs text-[#b08a32] mb-5">
-              Wholesale Jewellery Excellence
-            </p>
+        {/* ─── CTA BANNER ───────────────────────────────────── */}
+        <section className="relative py-24 md:py-32 px-5 lg:px-10 bg-[#0F0A06] overflow-hidden text-center">
+          <div className="absolute inset-0 opacity-25 bg-[radial-gradient(ellipse_at_center,_#C9A84C_0%,_transparent_65%)]" />
+          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "linear-gradient(#C9A84C 1px, transparent 1px), linear-gradient(90deg, #C9A84C 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
 
-            <h2 className="text-4xl md:text-5xl font-serif text-[#3D3127] mb-6">
-              Premium Gold Jewellery Wholesaler in India
+          <div className="relative max-w-3xl mx-auto">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="w-12 h-[1px] bg-[#C9A84C]/50" />
+              <span className="text-[#C9A84C] text-[10px] tracking-[5px] uppercase font-sans font-semibold">Connect With Us</span>
+              <div className="w-12 h-[1px] bg-[#C9A84C]/50" />
+            </div>
+            <h2 className="font-serif text-4xl md:text-6xl text-white leading-tight">
+              Never Miss A<br />
+              <span className="gold-shimmer">Moment of Luxury</span>
             </h2>
-
-            <p className="text-gray-600 leading-8 text-base md:text-lg">
-              Mahadev Ratnam is a trusted gold jewellery wholesaler based in India,
-              offering premium rings, earrings, necklaces and bridal jewellery
-              collections for retailers and jewellery businesses. Our designs combine
-              traditional craftsmanship with modern elegance, ensuring exceptional
-              quality, purity and customer satisfaction.
+            <p className="mt-6 text-[#8A7560] font-sans text-sm md:text-base leading-7">
+              Connect with us for the latest catalogues, live pricing, exclusive designs and wholesale partnership opportunities.
             </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="https://wa.me/919369895157"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-gold px-10 py-4 rounded-full text-sm inline-block"
+              >
+                WhatsApp Enquiry →
+              </a>
+              <Link href="/products" className="border border-[#C9A84C]/40 text-[#E8C97A] hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 px-10 py-4 rounded-full text-sm font-sans font-semibold transition-all duration-300">
+                View Catalogue
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-16 md:py-24 px-4 md:px-6 bg-[#fff7ea] text-center border-y border-[#e5c98a]">
-          <h2 className="text-4xl md:text-5xl font-serif text-[#3D3127]">
-            Never Miss A Moment Of Luxury
-          </h2>
-
-          <p className="mt-5 text-[#6b5b4a]">
-            Connect with us for latest catalogues, pricing and designs.
-          </p>
-
-          <a
-            href="https://wa.me/919369895157"
-            target="_blank"
-            className="inline-block mt-8 bg-gradient-to-r from-[#b08a32] to-[#d4af37] text-white px-9 py-4 rounded-full shadow-lg"
-          >
-            WhatsApp Enquiry
-          </a>
-        </section>
-
-        {/* FOOTER */}
-        <footer id="contact" className="bg-[#fffaf3] text-[#3D3127] px-4 md:px-6">
-          <div className="max-w-7xl mx-auto py-14 md:py-16 grid sm:grid-cols-2 md:grid-cols-4 gap-10">
+        {/* ─── FOOTER ───────────────────────────────────────── */}
+        <footer id="contact" className="bg-[#0F0A06] border-t border-[#C9A84C]/10">
+          <div className="max-w-7xl mx-auto px-5 lg:px-10 py-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {/* Brand */}
             <div>
-              <h2 className="text-3xl font-serif text-[#b08a32]">
-                Mahadev Ratnam
-              </h2>
-              <div className="w-10 h-[1px] bg-[#b08a32] mt-3 mb-5"></div>
-              <p className="text-gray-600 leading-7">
-                Premium Gold Jewellery Wholesaler offering elegant, traditional and
-                modern jewellery collections for retailers.
+              <h2 className="font-serif text-2xl text-[#E8C97A]">Mahadev Ratnam</h2>
+              <div className="w-8 h-[1px] bg-[#C9A84C] mt-3 mb-5" />
+              <p className="text-[#7A6650] text-sm font-sans leading-7">
+                Premium Gold Jewellery Wholesaler offering elegant, traditional and modern jewellery collections for retailers across India.
               </p>
+              <div className="mt-6 flex gap-3">
+                <a
+                  href="https://wa.me/919369895157"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#C9A84C] text-[#0F0A06] text-xs font-bold font-sans px-4 py-2 rounded-full hover:bg-[#E8C97A] transition-colors"
+                >
+                  WhatsApp
+                </a>
+                <Link href="/live-rate" className="border border-[#C9A84C]/30 text-[#C9A84C] text-xs font-sans px-4 py-2 rounded-full hover:border-[#C9A84C] transition-colors">
+                  Live Gold Rate
+                </Link>
+              </div>
             </div>
 
+            {/* Quick Links */}
             <div>
-              <h3 className="text-xl font-serif text-[#b08a32] mb-4">
-                Quick Links
-              </h3>
-              <ul className="space-y-3 text-gray-600">
-                <li><a href="#" className="hover:text-[#b08a32]">Home</a></li>
-                <li><a href="#collections" className="hover:text-[#b08a32]">Collections</a></li>
-                <li><a href="#about" className="hover:text-[#b08a32]">About</a></li>
-                <li><a href="/live-rate" className="hover:text-[#b08a32]">Live Gold Rate</a></li>
-                <li><a href="#contact" className="hover:text-[#b08a32]">Contact</a></li>
+              <h3 className="font-serif text-lg text-[#E8C97A] mb-5">Quick Links</h3>
+              <ul className="space-y-3">
+                {[
+                  { label: "Home", href: "/" },
+                  { label: "Collections", href: "#collections" },
+                  { label: "About Us", href: "#about" },
+                  { label: "Live Gold Rate", href: "/live-rate" },
+                  { label: "Admin Panel", href: "/admin" },
+                ].map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="text-[#7A6650] text-sm font-sans hover:text-[#C9A84C] transition-colors flex items-center gap-2">
+                      <span className="text-[#C9A84C]/40 text-xs">›</span> {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
+            {/* Collections */}
             <div>
-              <h3 className="text-xl font-serif text-[#b08a32] mb-4">
-                Contact
-              </h3>
-              <div className="space-y-3 text-gray-600">
-                <p>Phone: +91 9369895157</p>
-                <p>WhatsApp: +91 9369895157</p>
-                <p>Email: your-email@gmail.com</p>
-                <p>Lucknow, Uttar Pradesh, India</p>
-              </div>
+              <h3 className="font-serif text-lg text-[#E8C97A] mb-5">Collections</h3>
+              <ul className="space-y-3">
+                {["Rings", "Earrings", "Necklaces", "Bangles", "Bracelets", "Bridal"].map((cat) => (
+                  <li key={cat}>
+                    <Link href={`/products/${cat.toLowerCase()}`} className="text-[#7A6650] text-sm font-sans hover:text-[#C9A84C] transition-colors flex items-center gap-2">
+                      <span className="text-[#C9A84C]/40 text-xs">›</span> {cat}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
 
+            {/* Contact */}
             <div>
-              <h3 className="text-xl font-serif text-[#b08a32] mb-4">
-                Business Info
-              </h3>
-              <div className="space-y-3 text-gray-600">
-                <p>Gold Jewellery Wholesaler</p>
-                <p>Pan India Wholesale Supply</p>
-                <p>Custom Orders Available</p>
-                <p>Mon - Sat: 10 AM - 7 PM</p>
+              <h3 className="font-serif text-lg text-[#E8C97A] mb-5">Contact Us</h3>
+              <div className="space-y-4 text-sm font-sans text-[#7A6650]">
+                <div>
+                  <p className="text-[#C9A84C] text-[10px] uppercase tracking-wider mb-1">Phone / WhatsApp</p>
+                  <a href="tel:+919369895157" className="hover:text-[#C9A84C] transition-colors">+91 93698 95157</a>
+                </div>
+                <div>
+                  <p className="text-[#C9A84C] text-[10px] uppercase tracking-wider mb-1">Location</p>
+                  <p>Lucknow, Uttar Pradesh, India</p>
+                </div>
+                <div>
+                  <p className="text-[#C9A84C] text-[10px] uppercase tracking-wider mb-1">Business Hours</p>
+                  <p>Mon – Sat: 10:00 AM – 7:00 PM</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-[#e5c98a] py-6 text-center text-gray-600 text-sm">
-            © 2026 Mahadev Ratnam. All Rights Reserved.
+          {/* Footer bottom */}
+          <div className="border-t border-[#C9A84C]/10 py-5 px-5 lg:px-10">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+              <p className="text-[#4A3A2A] text-xs font-sans">
+                © 2025 Mahadev Ratnam. All rights reserved.
+              </p>
+              <p className="text-[#4A3A2A] text-xs font-sans">
+                Premium Gold Jewellery Wholesaler · Lucknow, India
+              </p>
+            </div>
           </div>
         </footer>
+
       </main>
     </>
   );

@@ -1,11 +1,18 @@
-import { Playfair_Display } from "next/font/google";
+import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/context/CartContext";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
+  variable: "--font-serif",
   weight: ["400", "500", "600", "700"],
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata = {
@@ -16,8 +23,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body className={`${playfair.className} relative min-h-screen bg-[#F6F1E8]`}>
+    <html lang="en" className="scroll-smooth">
+      <body className={`${montserrat.variable} ${playfair.variable} font-sans relative min-h-screen bg-[#FCF8F3] text-[#2D2219]`}>
         <CartProvider>
           <Navbar />
           {children}

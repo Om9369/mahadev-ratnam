@@ -1,8 +1,27 @@
 @import "tailwindcss";
 
+@theme {
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+
+  --color-gold: #C9A84C;
+  --color-gold-light: #E8C97A;
+  --color-gold-dark: #9A6F2E;
+  --color-cream: #FCF8F3;
+  --color-dark: #0F0A06;
+  --color-brown: #2D2219;
+}
+
 :root {
-  --background: #f8f3ee;
-  --foreground: #1f1f1f;
+  --background: #FCF8F3;
+  --foreground: #2D2219;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dark: #9A6F2E;
+  --dark: #0F0A06;
+  --dark2: #1A1008;
+  --cream: #FCF8F3;
+  --cream2: #F3EAD8;
 }
 
 html {
@@ -14,25 +33,109 @@ body {
   color: var(--foreground);
   margin: 0;
   padding: 0;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
   box-sizing: border-box;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+/* Gold shimmer gradient utility */
+.gold-gradient {
+  background: linear-gradient(135deg, #C9A84C 0%, #E8C97A 40%, #C9A84C 60%, #9A6F2E 100%);
+}
+
+.gold-text-gradient {
+  background: linear-gradient(135deg, #C9A84C, #E8C97A, #C9A84C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #C9A84C 0%, #E8C97A 30%, #fff8e7 50%, #E8C97A 70%, #C9A84C 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scroll animations */
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .animate-scroll {
   width: max-content;
-  animation: scroll 35s linear infinite;
+  animation: scroll 55s linear infinite;
 }
-
 .animate-scroll:hover {
   animation-play-state: paused;
 }
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fadeUp 0.8s ease forwards;
+}
+
+/* Card hover glow effect */
+.card-glow:hover {
+  box-shadow: 0 8px 40px rgba(201, 168, 76, 0.18), 0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* Gold border shine */
+.gold-border {
+  border: 1px solid rgba(201, 168, 76, 0.4);
+}
+
+/* Button styles */
+.btn-gold {
+  background: linear-gradient(135deg, #C9A84C, #E8C97A, #9A6F2E);
+  color: #fff;
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #E8C97A, #C9A84C, #E8C97A);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(201, 168, 76, 0.35);
+}
+
+.btn-dark {
+  background: #1A1008;
+  color: #F3EAD8;
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+.btn-dark:hover {
+  background: #2D2219;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #FCF8F3; }
+::-webkit-scrollbar-thumb { background: #C9A84C; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9A6F2E; }

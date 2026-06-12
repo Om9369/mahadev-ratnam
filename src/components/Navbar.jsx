@@ -2,22 +2,10 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { useState } from "react";
-import {
-  Menu,
-  Search,
-  Heart,
-  User,
-  ShoppingBag,
-  X,
-  ChevronDown,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, ShoppingBag, X, ChevronDown, Phone } from "lucide-react";
 
-export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const { cart } = useCart();
-
- const categories = [
+const categories = [
   {
     name: "All Jewellery",
     href: "/products",
@@ -29,7 +17,6 @@ export default function Navbar() {
       { name: "Necklaces", href: "/products/necklaces" },
     ],
   },
-
   {
     name: "Rings",
     href: "/products/rings",
@@ -42,7 +29,6 @@ export default function Navbar() {
       { name: "Couple Rings", href: "/products/rings?sub=Couple Rings" },
     ],
   },
-
   {
     name: "Earrings",
     href: "/products/earrings",
@@ -54,18 +40,6 @@ export default function Navbar() {
       { name: "Temple Earrings", href: "/products/earrings?sub=Temple Earrings" },
     ],
   },
-
-  {
-    name: "Chains",
-    href: "/products/chains",
-    items: [
-      { name: "Herringbone Chains", href: "/products/chains?sub=Herringbone Chains" },
-      { name: "Designer Chains", href: "/products/chains?sub=Designer Chains" },
-      { name: "Snake Chains", href: "/products/chains?sub=Snake Chains" },
-      { name: "Traditional Chains", href: "/products/chains?sub=Traditional Chains" },
-    ],
-  },
-
   {
     name: "Necklaces",
     href: "/products/necklaces",
@@ -73,42 +47,18 @@ export default function Navbar() {
       { name: "Designer Necklaces", href: "/products/necklaces?sub=Designer Necklaces" },
       { name: "Diamond Necklaces", href: "/products/necklaces?sub=Diamond Necklaces" },
       { name: "Floral Necklaces", href: "/products/necklaces?sub=Floral Necklaces" },
-      { name: "Light Weight Necklaces", href: "/products/necklaces?sub=Light Weight Necklaces" },
       { name: "Temple Necklaces", href: "/products/necklaces?sub=Temple Necklaces" },
     ],
   },
-
-  {
-    name: "Pendants",
-    href: "/products/pendants",
-    items: [
-      { name: "Designer Pendants", href: "/products/pendants?sub=Designer Pendants" },
-      { name: "Floral Pendants", href: "/products/pendants?sub=Floral Pendants" },
-    ],
-  },
-
   {
     name: "Bangles",
     href: "/products/bangles",
     items: [
       { name: "Designer Bangles", href: "/products/bangles?sub=Designer Bangles" },
       { name: "Diamond Cut Bangles", href: "/products/bangles?sub=Diamond Cut Bangles" },
-      { name: "Open Bangles", href: "/products/bangles?sub=Open Bangles" },
       { name: "Traditional Bangles", href: "/products/bangles?sub=Traditional Bangles" },
     ],
   },
-
-  {
-    name: "Bracelets",
-    href: "/products/bracelets",
-    items: [
-      { name: "Designer Bracelets", href: "/products/bracelets?sub=Designer Bracelets" },
-      { name: "Lightweight Bracelets", href: "/products/bracelets?sub=Lightweight Bracelets" },
-      { name: "Openable Bracelets", href: "/products/bracelets?sub=Openable Bracelets" },
-      { name: "Rope Bracelets", href: "/products/bracelets?sub=Rope Bracelets" },
-    ],
-  },
-
   {
     name: "Bridal",
     href: "/products/bridal",
@@ -117,168 +67,200 @@ export default function Navbar() {
       { name: "Bridal Sets", href: "/products/bridal?sub=Bridal Sets" },
     ],
   },
-
-  {
-    name: "Live Rate",
-    href: "/live-rate",
-  },
+  { name: "Live Rate", href: "/live-rate", items: [] },
 ];
 
- return (
-  <>
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#120B08]/95 backdrop-blur-md border-b border-[#B88A44]/30 shadow-lg">
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { cart } = useCart();
 
-      <div className="h-20 px-4 lg:px-10 flex items-center justify-between gap-6">
-        <button
-  type="button"
-  onClick={() => setOpen(!open)}
-  className="lg:hidden flex items-center justify-center w-11 h-11 rounded-full border border-[#B88A44]/40 text-[#F8E7B9] relative z-[999999]"
->
-  <Menu size={26} />
-</button>
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-        <Link href="/" className="text-center">
-          <div className="font-serif text-[#F8E7B9] text-lg lg:text-2xl font-semibold tracking-[0.16em] uppercase">
-            Mahadev Ratnam
-          </div>
-          <div className="hidden sm:block text-[10px] tracking-[0.35em] text-[#D6A84F] uppercase mt-1">
-            Gold Wholesaler
-          </div>
-        </Link>
-
-        <div className="hidden lg:flex flex-1 max-w-xl items-center border border-[#B88A44]/40 rounded-full px-4 py-2 bg-white/95 shadow-inner">
-          <Search size={18} className="text-[#7A5A2A]" />
-          <input
-            placeholder="Search rings, earrings, necklaces..."
-            className="w-full bg-transparent outline-none px-3 text-sm text-[#3C2A20]"
-          />
-        </div>
-
-        <div className="hidden lg:flex items-center gap-4 text-[#F8E7B9]">
-          <Heart size={21} className="hover:text-[#D6A84F] cursor-pointer" />
-          <User size={21} className="hover:text-[#D6A84F] cursor-pointer" />
-          <Link href="/cart" className="relative hover:text-[#D6A84F]">
-  <ShoppingBag size={21} />
-
-  {cart.length > 0 && (
-    <span className="absolute -top-3 -right-3 bg-[#D6A84F] text-[#120B08] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
-      {cart.length}
-    </span>
-  )}
-</Link>
-
-          <Link
-            href="https://wa.me/919369895157"
-            target="_blank"
-            className="ml-2 bg-[#D6A84F] text-[#120B08] px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#F8E7B9] transition"
-          >
-            Enquire
-          </Link>
-        </div>
-
-        <div className="w-11 lg:hidden"></div>
+  return (
+    <>
+      {/* Top announcement bar */}
+      <div className="fixed top-0 left-0 w-full z-50 bg-[#0F0A06] text-center py-2 px-4">
+        <p className="text-[10px] md:text-xs tracking-[3px] uppercase text-[#C9A84C] font-sans font-medium">
+          ✦ Premium Gold Jewellery Wholesaler — Pan India Supply &nbsp;|&nbsp; Call: +91 93698 95157 ✦
+        </p>
       </div>
 
-      <div className="hidden lg:flex h-14 items-center justify-center gap-7 bg-[#1A100C] border-t border-[#B88A44]/20 relative">
-        {categories.map((cat) => (
-          <div key={cat.name} className="relative group h-full flex items-center">
-            <Link
-              href={cat.href}
-              className="h-full flex items-center gap-1 font-serif text-[#F8E7B9] text-sm hover:text-[#D6A84F] transition"
+      {/* Main Navbar */}
+      <nav className={`fixed top-8 left-0 w-full z-40 transition-all duration-500 ${
+        scrolled
+          ? "bg-[#0F0A06]/97 backdrop-blur-xl shadow-2xl border-b border-[#C9A84C]/20"
+          : "bg-[#0F0A06]/90 backdrop-blur-md border-b border-[#C9A84C]/10"
+      }`}>
+
+        {/* Main header row */}
+        <div className="h-[68px] px-4 lg:px-10 flex items-center justify-between">
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full border border-[#C9A84C]/30 text-[#E8C97A] hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 transition-all"
+          >
+            <Menu size={22} />
+          </button>
+
+          {/* Logo */}
+          <Link href="/" className="flex flex-col items-center group">
+            <div className="font-serif text-[#F3EAD8] text-xl lg:text-2xl font-bold tracking-[0.18em] uppercase group-hover:text-[#C9A84C] transition-colors duration-300">
+              Mahadev Ratnam
+            </div>
+            <div className="hidden sm:block text-[9px] tracking-[0.4em] text-[#C9A84C] uppercase mt-0.5 font-sans font-medium">
+              Gold Jewellery Wholesaler
+            </div>
+          </Link>
+
+          {/* Right actions */}
+          <div className="flex items-center gap-3 text-[#E8C97A]">
+            <a
+              href="https://wa.me/919369895157"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center gap-2 bg-[#C9A84C] hover:bg-[#E8C97A] text-[#0F0A06] px-5 py-2.5 rounded-full text-xs font-sans font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:shadow-[#C9A84C]/30 hover:-translate-y-0.5"
             >
-              {cat.name}
-              <ChevronDown size={14} className="opacity-70 group-hover:rotate-180 transition" />
+              <Phone size={13} />
+              WhatsApp Enquiry
+            </a>
+
+            <Link href="/cart" className="relative p-2 hover:text-[#C9A84C] transition-colors">
+              <ShoppingBag size={22} />
+              {cart.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-[#C9A84C] text-[#0F0A06] text-[9px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center min-w-[18px] min-h-[18px]">
+                  {cart.length}
+                </span>
+              )}
             </Link>
+          </div>
+        </div>
 
-            <div className="absolute top-full left-1/2 -translate-x-1/2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200 bg-[#FFF8ED] shadow-2xl border border-[#D8C4A3] rounded-2xl w-72 z-[999999] overflow-hidden">
-              <div className="bg-[#E8D8BC] px-5 py-4">
-                <h3 className="font-serif text-xl text-[#3C2A20]">
-                  {cat.name}
-                </h3>
-                <p className="text-xs text-[#7A6657] mt-1">
-                  Premium wholesale collection
-                </p>
-              </div>
-
-              <div className="p-4 space-y-1">
-                {cat.items?.map((item) => (
-  <Link
-    key={item.name}
-    href={item.href}
-    className="block px-3 py-2 rounded-lg text-sm text-[#3C2A20] hover:bg-[#F4EBDD] hover:text-[#B88A44] transition"
-  >
-    {item.name}
-  </Link>
-))}
-              </div>
-
+        {/* Category nav row */}
+        <div className="hidden lg:flex h-12 items-center justify-center gap-1 bg-[#1A1008] border-t border-[#C9A84C]/15">
+          {categories.map((cat) => (
+            <div key={cat.name} className="relative group h-full flex items-center px-1">
               <Link
                 href={cat.href}
-                className="block m-4 mt-0 text-center bg-[#3C2A20] text-white py-2 rounded-full text-sm hover:bg-[#B88A44] transition"
+                className="h-full flex items-center gap-1 px-3 font-sans text-[13px] text-[#D4C0A0] hover:text-[#C9A84C] font-medium tracking-wide transition-colors duration-200"
               >
-                View Collection
+                {cat.name}
+                {cat.items.length > 0 && (
+                  <ChevronDown size={12} className="opacity-60 group-hover:rotate-180 transition-transform duration-300" />
+                )}
               </Link>
+
+              {/* Gold underline */}
+              <div className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#C9A84C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
+
+              {/* Dropdown */}
+              {cat.items.length > 0 && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 invisible opacity-0 group-hover:visible group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 w-64 z-[9999]">
+                  <div className="mt-2 bg-white border border-[#E8D8B8] rounded-2xl shadow-2xl overflow-hidden">
+                    {/* Dropdown header */}
+                    <div className="bg-gradient-to-r from-[#0F0A06] to-[#2D1A0A] px-5 py-4">
+                      <h3 className="font-serif text-lg text-[#E8C97A]">{cat.name}</h3>
+                      <p className="text-[10px] text-[#C9A84C]/70 mt-0.5 font-sans tracking-wider uppercase">Premium Collection</p>
+                    </div>
+
+                    {/* Dropdown links */}
+                    <div className="p-2">
+                      {cat.items.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-sans text-[#3C2A20] hover:bg-[#FCF0DD] hover:text-[#C9A84C] transition-all duration-200 group/item"
+                        >
+                          <span>{item.name}</span>
+                          <span className="text-[#C9A84C] opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                        </Link>
+                      ))}
+                    </div>
+
+                    <div className="px-3 pb-3">
+                      <Link
+                        href={cat.href}
+                        className="block text-center bg-[#0F0A06] hover:bg-[#C9A84C] text-[#E8C97A] hover:text-[#0F0A06] py-2.5 rounded-xl text-xs font-sans font-semibold tracking-wider uppercase transition-all duration-300"
+                      >
+                        View All {cat.name}
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </nav>
 
-           </nav>
-
+      {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-[999999] bg-black/70 lg:hidden">
-          <div className="w-[86%] max-w-sm h-full bg-[#120B08] px-5 py-6 overflow-y-auto shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[#B88A44]/30 pb-5">
+        <div
+          className="fixed inset-0 z-[999] lg:hidden"
+          onClick={() => setOpen(false)}
+        >
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div
+            className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-[#0F0A06] shadow-2xl overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drawer header */}
+            <div className="flex items-center justify-between px-5 py-6 border-b border-[#C9A84C]/20">
               <div>
-                <h2 className="font-serif text-[#F8E7B9] text-lg tracking-widest">
-                  MAHADEV RATNAM
-                </h2>
-                <p className="text-xs text-[#D6A84F] mt-1">
-                  Premium Gold Wholesaler
-                </p>
+                <div className="font-serif text-[#E8C97A] text-lg tracking-widest uppercase">Mahadev Ratnam</div>
+                <div className="text-[10px] text-[#C9A84C] tracking-[0.3em] uppercase mt-1 font-sans">Gold Wholesaler</div>
               </div>
-
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="text-[#F8E7B9]"
+                className="w-9 h-9 rounded-full border border-[#C9A84C]/30 flex items-center justify-center text-[#E8C97A]"
               >
-                <X size={26} />
+                <X size={20} />
               </button>
             </div>
 
-            <div className="mt-6 space-y-2">
+            {/* Drawer nav */}
+            <div className="px-4 py-4 space-y-1">
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
                   href={cat.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-between rounded-xl px-4 py-3 text-[#F8E7B9] hover:bg-[#1A100C] border-b border-[#B88A44]/10"
+                  className="flex items-center justify-between px-4 py-3.5 rounded-xl text-[#D4C0A0] hover:bg-[#1A1008] hover:text-[#C9A84C] transition-all border border-transparent hover:border-[#C9A84C]/15"
                 >
-                  <span className="font-serif text-base">{cat.name}</span>
-                  <span className="text-[#D6A84F]">›</span>
+                  <span className="font-sans text-sm font-medium tracking-wide">{cat.name}</span>
+                  <span className="text-[#C9A84C] text-lg">›</span>
                 </Link>
               ))}
             </div>
 
-            <Link
-              href="/cart"
-              onClick={() => setOpen(false)}
-              className="block mt-6 bg-[#3C2A20] border border-[#B88A44]/40 text-[#F8E7B9] text-center px-5 py-3 rounded-full font-semibold"
-            >
-              Cart ({cart.length})
-            </Link>
-
-            <Link
-              href="https://wa.me/919369895157"
-              target="_blank"
-              className="block mt-4 bg-[#D6A84F] text-[#120B08] text-center px-5 py-3 rounded-full font-semibold"
-            >
-              Enquire on WhatsApp
-            </Link>
+            {/* Drawer footer */}
+            <div className="px-4 pt-2 pb-8 space-y-3 border-t border-[#C9A84C]/10 mt-2">
+              <Link
+                href="/cart"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-center gap-2 w-full border border-[#C9A84C]/40 text-[#E8C97A] py-3.5 rounded-full font-sans text-sm font-semibold"
+              >
+                <ShoppingBag size={16} /> Cart ({cart.length})
+              </Link>
+              <a
+                href="https://wa.me/919369895157"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full bg-[#C9A84C] text-[#0F0A06] py-3.5 rounded-full font-sans text-sm font-bold"
+              >
+                WhatsApp Enquiry
+              </a>
+            </div>
           </div>
         </div>
       )}
     </>
-      );
+  );
 }
