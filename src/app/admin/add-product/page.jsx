@@ -30,7 +30,8 @@ export default function AddProductPage() {
     availability: "Available",
     description: "",
   });
-
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
