@@ -115,7 +115,13 @@ export default function AddProductPage() {
       const data = await res.json();
 
       if (data.success) {
-        alert("Product added successfully!");
+        setMessage("Product added successfully!");
+setMessageType("success");
+
+setTimeout(() => {
+  setMessage("");
+  setMessageType("");
+}, 3000);
         setForm({
           name: "",
           slug: "",
@@ -130,11 +136,13 @@ export default function AddProductPage() {
           description: "",
         });
       } else {
-        alert(data.error || "Failed to add product");
+        setMessage(data.error || "Failed to add product");
+setMessageType("error");
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+     setMessage("Something went wrong. Please try again.");
+setMessageType("error");
     } finally {
       setSaving(false);
     }
@@ -157,7 +165,17 @@ export default function AddProductPage() {
             <p className="mt-2 text-gray-500 text-sm">
               Fill in details to update the live jewellery catalogue.
             </p>
-
+          {message && (
+  <div
+    className={`mt-5 rounded-2xl px-5 py-4 text-sm font-semibold border ${
+      messageType === "success"
+        ? "bg-green-50 text-green-700 border-green-200"
+        : "bg-red-50 text-red-700 border-red-200"
+    }`}
+  >
+    {message}
+  </div>
+)}
             <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-5 mt-6">
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-600 mb-1">Product Name</label>
