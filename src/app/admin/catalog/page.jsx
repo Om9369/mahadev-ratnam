@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import AdminProtected from "@/components/AdminProtected";
 
 const CATEGORIES = [
   { value: "rings", label: "Rings" },
@@ -209,6 +210,7 @@ export default function CatalogPage() {
   };
 
   return (
+  <AdminProtected>
     <main className="min-h-screen bg-[#fffaf3] pt-32 md:pt-40 px-4 md:px-6 pb-16">
       <section className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -482,6 +484,7 @@ export default function CatalogPage() {
           </div>
         </div>
       )}
-    </main>
+        </main>
+  </AdminProtected>
   );
 }

@@ -19,7 +19,7 @@ export default function AdminLoginPage() {
       cleanPassword === "admin123"
     ) {
       localStorage.setItem("adminLoggedIn", "true");
-      router.push("/admin");
+      router.replace("/admin");
       return;
     }
 
@@ -33,13 +33,18 @@ export default function AdminLoginPage() {
           Admin Login
         </h1>
 
+        <p className="mt-3 text-center text-sm text-gray-500">
+          Enter admin credentials to continue.
+        </p>
+
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <input
             type="email"
             placeholder="Admin Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-[#eadfcc] rounded-xl px-4 py-3 outline-none"
+            className="w-full border border-[#eadfcc] rounded-xl px-4 py-3 outline-none focus:border-[#b08a32]"
+            required
           />
 
           <input
@@ -47,21 +52,17 @@ export default function AdminLoginPage() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-[#eadfcc] rounded-xl px-4 py-3 outline-none"
+            className="w-full border border-[#eadfcc] rounded-xl px-4 py-3 outline-none focus:border-[#b08a32]"
+            required
           />
 
           <button
             type="submit"
-            className="w-full bg-[#3D3127] text-white py-4 rounded-full"
+            className="w-full bg-[#3D3127] hover:bg-[#2c221a] text-white py-4 rounded-full transition"
           >
             Login
           </button>
         </form>
-
-        <p className="mt-5 text-center text-sm text-gray-500">
-          Email: admin@mahadevratnam.com <br />
-          Password: admin123
-        </p>
       </section>
     </main>
   );

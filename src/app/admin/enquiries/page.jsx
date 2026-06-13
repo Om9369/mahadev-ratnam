@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AdminProtected from "@/components/AdminProtected";
 
 const enquiries = [
   {
@@ -19,7 +20,8 @@ const enquiries = [
 
 export default function EnquiriesPage() {
   return (
-    <main className="min-h-screen bg-[#fffaf3] pt-44 md:pt-48 px-4 md:px-6 pb-16">
+    <AdminProtected>
+      <main className="min-h-screen bg-[#fffaf3] pt-44 md:pt-48 px-4 md:px-6 pb-16">
       <section className="max-w-6xl mx-auto">
         <Link href="/admin" className="text-[#b08a32] text-sm">
           ← Back to Admin
@@ -71,6 +73,7 @@ export default function EnquiriesPage() {
           </table>
         </div>
       </section>
-    </main>
+     </main>
+    </AdminProtected>
   );
 }

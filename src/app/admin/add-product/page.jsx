@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import AdminProtected from "@/components/AdminProtected";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
@@ -140,6 +141,7 @@ export default function AddProductPage() {
   };
 
   return (
+  <AdminProtected>
     <main className="min-h-screen bg-[#fffaf3] pt-32 md:pt-40 px-4 md:px-6 pb-16">
       <section className="max-w-6xl mx-auto">
         <Link href="/admin" className="text-[#b08a32] hover:underline text-sm font-medium">
@@ -381,5 +383,6 @@ export default function AddProductPage() {
         </div>
       </section>
     </main>
+     </AdminProtected>
   );
 }

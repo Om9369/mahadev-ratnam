@@ -1,8 +1,10 @@
 import Link from "next/link";
+import AdminProtected from "@/components/AdminProtected";
 
 export default function AdminPage() {
   return (
-    <main className="min-h-screen bg-[#fffaf3]">
+    <AdminProtected>
+      <main className="min-h-screen bg-[#fffaf3]">
       <section className="max-w-6xl mx-auto pt-44 md:pt-48 px-4 md:px-6 pb-16">
         <h1 className="text-4xl md:text-5xl font-serif text-[#3D3127]">
           Mahadev Ratnam Admin Panel
@@ -86,5 +88,6 @@ export default function AdminPage() {
         </div>
       </section>
     </main>
+    </AdminProtected>
   );
 }
