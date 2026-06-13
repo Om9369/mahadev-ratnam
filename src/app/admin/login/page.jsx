@@ -7,6 +7,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -23,7 +24,7 @@ export default function AdminLoginPage() {
       return;
     }
 
-    alert("Wrong email or password");
+    setError("Wrong email or password");
   }
 
   return (
@@ -36,16 +37,23 @@ export default function AdminLoginPage() {
         <p className="mt-3 text-center text-sm text-gray-500">
           Enter admin credentials to continue.
         </p>
-
+        {error && (
+  <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+    {error}
+  </div>
+)}
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <input
-            type="email"
-            placeholder="Admin Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-[#eadfcc] rounded-xl px-4 py-3 outline-none focus:border-[#b08a32]"
-            required
-          />
+  type="email"
+  placeholder="Admin Email"
+  value={email}
+  onChange={(e) => {
+    setEmail(e.target.value);
+    setError("");
+  }}
+  className="w-full border border-[#eadfcc] rounded-xl px-4 py-3 outline-none focus:border-[#b08a32]"
+  required
+/>
 
           <input
             type="password"

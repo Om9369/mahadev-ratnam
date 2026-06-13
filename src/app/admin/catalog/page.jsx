@@ -22,6 +22,16 @@ export default function CatalogPage() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [deleteProductId, setDeleteProductId] = useState(null);
+
+const showToast = (type, text) => {
+  setToast({ type, text });
+
+  setTimeout(() => {
+    setToast(null);
+  }, 3000);
+};
 
   // Fetch products on mount
   useEffect(() => {
@@ -46,7 +56,6 @@ export default function CatalogPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
       const res = await fetch(`/api/inventory?id=${id}`, {
@@ -56,13 +65,13 @@ export default function CatalogPage() {
 
       if (data.success) {
         setProducts((prev) => prev.filter((p) => p.id !== id));
-        alert("Product deleted successfully!");
+        showToast("success", "Product deleted successfully!");
       } else {
-        alert("Failed to delete product: " + data.error);
+        showToast("error", "Failed to delete product: " + data.error);
       }
     } catch (error) {
       console.error("Delete error:", error);
-      alert("Something went wrong");
+      showToast("error", "Something went wrong");
     }
   };
 
@@ -86,10 +95,11 @@ export default function CatalogPage() {
         setProducts((prev) =>
           prev.map((p) => (p.id === product.id ? { ...p, featured: product.featured } : p))
         );
-        alert("Failed to update featured status: " + data.error);
+        showToast("error", "Failed to update featured status: " + data.error);
       }
     } catch (error) {
       console.error(error);
+      showToast("error", "Something went wrong while updating featured status.");
       // Revert on failure
       setProducts((prev) =>
         prev.map((p) => (p.id === product.id ? { ...p, featured: product.featured } : p))
@@ -116,7 +126,7 @@ export default function CatalogPage() {
         setProducts((prev) =>
           prev.map((p) => (p.id === product.id ? { ...p, availability: product.availability } : p))
         );
-        alert("Failed to update availability: " + data.error);
+        showToast("error", "Failed to update availability: " + data.error);
       }
     } catch (error) {
       console.error(error);
@@ -168,7 +178,7 @@ export default function CatalogPage() {
       setEditingProduct((prev) => ({ ...prev, image: publicUrl }));
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("Error uploading image: " + error.message);
+      showToast("error", "Error uploading image: " + error.message);
     } finally {
       setUploading(false);
     }
@@ -178,7 +188,7 @@ export default function CatalogPage() {
     e.preventDefault();
 
     if (!editingProduct.name || !editingProduct.slug || !editingProduct.image) {
-      alert("Please fill in Name, Slug and ensure image is uploaded.");
+      showToast("error", "Please fill in Name, Slug and ensure image is uploaded.");
       return;
     }
 
@@ -197,13 +207,13 @@ export default function CatalogPage() {
           prev.map((p) => (p.id === data.product.id ? data.product : p))
         );
         setEditingProduct(null);
-        alert("Product updated successfully!");
+        showToast("success", "Product updated successfully!");
       } else {
-        alert(data.error || "Failed to update product");
+        showToast("error", data.error || "Failed to update product");
       }
     } catch (error) {
       console.error("Update error:", error);
-      alert("Something went wrong");
+      showToast("error", "Something went wrong");
     } finally {
       setSaving(false);
     }
@@ -311,7 +321,7 @@ export default function CatalogPage() {
                     </button>
 
                     <button
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => setDeleteProductId(product.id)}
                       className="flex-1 bg-red-50 text-red-600 hover:bg-red-100 py-2.5 rounded-full text-xs font-semibold transition"
                     >
                       Delete
@@ -484,6 +494,49 @@ export default function CatalogPage() {
           </div>
         </div>
       )}
+      {deleteProductId && (
+  <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center px-4">
+    <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-[#eadfcc]">
+      <h2 className="text-2xl font-serif text-[#3D3127]">Delete Product?</h2>
+      <p className="mt-3 text-sm text-gray-600">
+        Are you sure you want to delete this product? This action cannot be undone.
+      </p>
+
+      <div className="mt-6 flex gap-3">
+        <button
+          onClick={() => setDeleteProductId(null)}
+          className="flex-1 border border-gray-300 text-gray-700 py-3 rounded-full text-sm font-semibold"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={() => {
+            handleDelete(deleteProductId);
+            setDeleteProductId(null);
+          }}
+          className="flex-1 bg-red-600 text-white py-3 rounded-full text-sm font-semibold"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+{toast && (
+  <div className="fixed top-24 right-5 z-[9999]">
+    <div
+      className={`rounded-2xl px-5 py-4 shadow-2xl border text-sm font-semibold ${
+        toast.type === "success"
+          ? "bg-green-50 text-green-700 border-green-200"
+          : "bg-red-50 text-red-700 border-red-200"
+      }`}
+    >
+      {toast.text}
+    </div>
+  </div>
+)}
         </main>
   </AdminProtected>
   );

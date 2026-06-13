@@ -30,10 +30,18 @@ export default function AddProductPage() {
     availability: "Available",
     description: "",
   });
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("");
+  
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState(null);
+
+const showToast = (type, text) => {
+  setToast({ type, text });
+
+  setTimeout(() => {
+    setToast(null);
+  }, 3000);
+};
 
   // Auto-generate slug from name
   useEffect(() => {
@@ -74,7 +82,7 @@ export default function AddProductPage() {
 
     if (uploadError) {
       console.error("Upload error:", uploadError);
-      alert(uploadError.message);
+      showToast("error", uploadError.message || "Image upload failed.");
       return;
     }
 
@@ -87,10 +95,10 @@ export default function AddProductPage() {
       image: publicData.publicUrl,
     }));
 
-    alert("Image uploaded successfully!");
+    showToast("success", "Image uploaded successfully!");
   } catch (error) {
     console.error("Error uploading image:", error);
-    alert("Error uploading image: " + error.message);
+    showToast("error", "Error uploading image: " + error.message);
   } finally {
     setUploading(false);
   }
@@ -99,7 +107,7 @@ export default function AddProductPage() {
     e.preventDefault();
 
     if (!form.name || !form.slug || !form.image) {
-      alert("Please fill in Name, Slug and Upload an Image.");
+      showToast("error", "Please fill in Name, Slug and Upload an Image.");
       return;
     }
 
@@ -116,13 +124,7 @@ export default function AddProductPage() {
       const data = await res.json();
 
       if (data.success) {
-        setMessage("Product added successfully!");
-setMessageType("success");
-
-setTimeout(() => {
-  setMessage("");
-  setMessageType("");
-}, 3000);
+       showToast("success", "Product added successfully!");
         setForm({
           name: "",
           slug: "",
@@ -137,8 +139,7 @@ setTimeout(() => {
           description: "",
         });
       } else {
-        setMessage(data.error || "Failed to add product");
-setMessageType("error");
+       showToast("error", data.error || "Failed to add product");
       }
     } catch (error) {
       console.error(error);
@@ -166,17 +167,7 @@ setMessageType("error");
             <p className="mt-2 text-gray-500 text-sm">
               Fill in details to update the live jewellery catalogue.
             </p>
-          {message && (
-  <div
-    className={`mt-5 rounded-2xl px-5 py-4 text-sm font-semibold border ${
-      messageType === "success"
-        ? "bg-green-50 text-green-700 border-green-200"
-        : "bg-red-50 text-red-700 border-red-200"
-    }`}
-  >
-    {message}
-  </div>
-)}
+         
             <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-5 mt-6">
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-600 mb-1">Product Name</label>
@@ -401,6 +392,19 @@ setMessageType("error");
           </div>
         </div>
       </section>
+      {toast && (
+  <div className="fixed top-24 right-5 z-[9999]">
+    <div
+      className={`rounded-2xl px-5 py-4 shadow-2xl border text-sm font-semibold ${
+        toast.type === "success"
+          ? "bg-green-50 text-green-700 border-green-200"
+          : "bg-red-50 text-red-700 border-red-200"
+      }`}
+    >
+      {toast.text}
+    </div>
+  </div>
+)}
     </main>
      </AdminProtected>
   );
