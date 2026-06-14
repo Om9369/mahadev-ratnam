@@ -1,4 +1,7 @@
 import Link from "next/link";
+import ProductSearchFilter from "@/components/ProductSearchFilter";
+import ProductsClient from "@/components/ProductsClient";
+import { allProducts } from "@/data/allProducts";
 
 export const metadata = {
   title: "Jewellery Collections | Mahadev Ratnam",
@@ -122,8 +125,11 @@ export default function ProductsPage() {
         </div>
       </div>
 
+      {/* Search and Filter Section */}
+      <ProductsClient />
+
       {/* Category Grid */}
-      <section className="max-w-7xl mx-auto px-5 lg:px-10 mt-14">
+      <section className="max-w-7xl mx-auto px-5 lg:px-10 mt-20">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-8 h-[1px] bg-[#C9A84C]" />
           <h2 className="font-serif text-2xl md:text-3xl text-[#2D2219]">Browse By Category</h2>

@@ -1,10 +1,11 @@
-"use client";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "use client";
 
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { allProducts } from "@/data/allProducts";
+import CustomerReviews from "@/components/CustomerReviews";
 
 const staticArrivals = allProducts.slice(0, 10);
 
@@ -917,6 +918,9 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
+
+        {/* ─── CUSTOMER REVIEWS ─────────────────────────────── */}
+        <CustomerReviews limit={3} />
 
         {/* ─── FOOTER ───────────────────────────────────────── */}
         <footer id="contact" className="bg-[#0F0A06] border-t border-[#C9A84C]/10">

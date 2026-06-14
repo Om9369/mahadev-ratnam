@@ -3,6 +3,7 @@ import Image from "next/image";
 import { allProducts } from "@/data/allProducts";
 import AddToCartButton from "@/components/AddToCartButton";
 import { supabase } from "@/lib/supabase";
+import ProductDetailClient from "@/components/ProductDetailClient";
 
 export const dynamic = "force-dynamic";
 
@@ -88,164 +89,12 @@ export default async function ProductPage({ params, searchParams }) {
 
   /* ── SINGLE PRODUCT PAGE ─────────────────────────────── */
   if (singleProduct) {
-    const purityArray = Array.isArray(singleProduct.purity)
-      ? singleProduct.purity
-      : typeof singleProduct.purity === "string"
-      ? singleProduct.purity.split(",").map((p) => p.trim()).filter(Boolean)
-      : ["18K", "22K"];
+    // Fetch related products from the same category (excluding current product)
+    const relatedProducts = allProducts
+      .filter(p => p.category === singleProduct.category && p.slug !== singleProduct.slug)
+      .slice(0, 4);
 
-    return (
-      <main className="pt-28 min-h-screen bg-[#FCF8F3] pb-20">
-        <div className="max-w-7xl mx-auto px-5 lg:px-10 mb-8">
-          <nav className="flex items-center gap-2 text-xs font-sans text-[#9A8870]">
-            <Link href="/" className="hover:text-[#C9A84C] transition-colors">Home</Link>
-            <span>›</span>
-            <Link href="/products" className="hover:text-[#C9A84C] transition-colors">Collections</Link>
-            <span>›</span>
-            <Link href={`/products/${singleProduct.category}`} className="capitalize hover:text-[#C9A84C] transition-colors">
-              {singleProduct.category}
-            </Link>
-            <span>›</span>
-            <span className="text-[#2D2219] font-medium truncate max-w-[180px]">{singleProduct.name}</span>
-          </nav>
-        </div>
-
-        <section className="max-w-7xl mx-auto px-5 lg:px-10">
-          <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-start">
-            <div className="relative">
-              <div className="absolute -top-3 -left-3 w-16 h-16 border-t-2 border-l-2 border-[#C9A84C]/40 rounded-tl-2xl z-10" />
-              <div className="absolute -bottom-3 -right-3 w-16 h-16 border-b-2 border-r-2 border-[#C9A84C]/40 rounded-br-2xl z-10" />
-
-              <div className="relative rounded-3xl overflow-hidden bg-white border border-[#E8D8B8] shadow-xl">
-                <Image
-                  src={singleProduct.image}
-                  alt={singleProduct.name}
-                  width={800}
-                  height={800}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="w-full h-[420px] md:h-[560px] object-cover"
-                  priority
-                />
-
-                {singleProduct.availability === "Out of Stock" && (
-                  <div className="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full font-sans">
-                    Out of Stock
-                  </div>
-                )}
-
-                {singleProduct.featured && (
-                  <div className="absolute top-4 right-4 bg-[#C9A84C] text-[#0F0A06] text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full font-sans">
-                    ⭐ Featured
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="lg:pt-4">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-5 h-[1px] bg-[#C9A84C]" />
-                <span className="text-[#C9A84C] text-[10px] tracking-[4px] uppercase font-sans font-semibold">
-                  {singleProduct.subCategory}
-                </span>
-              </div>
-
-              <h1 className="font-serif text-4xl md:text-5xl text-[#2D2219] leading-tight">
-                {singleProduct.name}
-              </h1>
-
-              <p className="mt-5 text-[#7A6650] font-sans text-sm md:text-base leading-8">
-                {singleProduct.description || "Premium gold jewellery design by Mahadev Ratnam — crafted with tradition, elegance and superior purity for discerning retailers and wholesale buyers."}
-              </p>
-
-              <div className="mt-8 bg-white border border-[#E8D8B8] rounded-2xl p-6 space-y-4 shadow-sm">
-                <h3 className="font-serif text-lg text-[#2D2219] border-b border-[#F0E6D0] pb-3 mb-4">
-                  Product Details
-                </h3>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-[#9A8870] font-sans font-semibold">Weight</span>
-                  <span className="font-sans text-sm font-semibold text-[#2D2219]">{singleProduct.weight || "As per design"}</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-[#9A8870] font-sans font-semibold">Availability</span>
-                  <span className={`text-xs font-bold font-sans px-3 py-1 rounded-full ${
-                    singleProduct.availability === "Available"
-                      ? "bg-green-50 text-green-700 border border-green-200"
-                      : "bg-red-50 text-red-600 border border-red-200"
-                  }`}>
-                    {singleProduct.availability || "Available"}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-[#9A8870] font-sans font-semibold">Available In</span>
-                  <div className="flex gap-2">
-                    {purityArray.map((p) => (
-                      <span key={p} className="bg-[#FCF8F3] border border-[#C9A84C]/40 text-[#C9A84C] text-xs font-bold font-sans px-3 py-1 rounded-full">
-                        {p}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {(singleProduct.price18k || singleProduct.price22k) && (
-                <div className="mt-5 grid grid-cols-2 gap-4">
-                  {singleProduct.price18k && (
-                    <div className="bg-[#0F0A06] rounded-2xl p-5 text-center border border-[#C9A84C]/20">
-                      <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans font-semibold">18K Gold</p>
-                      <p className="font-serif text-2xl text-white mt-2">
-                        ₹{Number(singleProduct.price18k).toLocaleString("en-IN")}
-                      </p>
-                    </div>
-                  )}
-
-                  {singleProduct.price22k && (
-                    <div className="bg-[#C9A84C] rounded-2xl p-5 text-center">
-                      <p className="text-[10px] text-[#0F0A06] tracking-[3px] uppercase font-sans font-semibold">22K Gold</p>
-                      <p className="font-serif text-2xl text-[#0F0A06] mt-2">
-                        ₹{Number(singleProduct.price22k).toLocaleString("en-IN")}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <p className="mt-3 text-[10px] text-[#9A8870] font-sans text-center italic">
-                * Prices may vary based on live gold rate, weight and making charges.
-              </p>
-
-              <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                <AddToCartButton product={singleProduct} />
-
-                <a
-                  href={`https://wa.me/919369895157?text=Hello%20Mahadev%20Ratnam%2C%20I%20want%20to%20enquire%20about%20${encodeURIComponent(singleProduct.name)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 btn-gold text-center py-4 rounded-full text-sm"
-                >
-                  Enquire on WhatsApp →
-                </a>
-              </div>
-
-              <div className="mt-8 grid grid-cols-3 gap-3 border-t border-[#F0E6D0] pt-6">
-                {[
-                  { icon: "✦", label: "BIS Hallmarked" },
-                  { icon: "◈", label: "Pan India Supply" },
-                  { icon: "❋", label: "Wholesale Price" },
-                ].map((badge) => (
-                  <div key={badge.label} className="text-center">
-                    <div className="text-[#C9A84C] text-xl mb-1">{badge.icon}</div>
-                    <div className="text-[10px] text-[#9A8870] font-sans font-medium leading-4">{badge.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    );
+    return <ProductDetailClient product={singleProduct} relatedProducts={relatedProducts} />;
   }
 
   /* ── CATEGORY PAGE ───────────────────────────────────── */

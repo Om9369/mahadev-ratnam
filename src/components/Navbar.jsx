@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Menu, ShoppingBag, X, ChevronDown, Phone } from "lucide-react";
 
@@ -73,7 +73,7 @@ const categories = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { cart } = useCart();
+  const { cart, cartCount, setIsOpen } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -126,14 +126,17 @@ export default function Navbar() {
               WhatsApp Enquiry
             </a>
 
-            <Link href="/cart" className="relative p-2 hover:text-[#C9A84C] transition-colors">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="relative p-2 hover:text-[#C9A84C] transition-colors"
+            >
               <ShoppingBag size={22} />
-              {cart.length > 0 && (
+              {cartCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-[#C9A84C] text-[#0F0A06] text-[9px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center min-w-[18px] min-h-[18px]">
-                  {cart.length}
+                  {cartCount}
                 </span>
               )}
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -237,13 +240,15 @@ export default function Navbar() {
 
             {/* Drawer footer */}
             <div className="px-4 pt-2 pb-8 space-y-3 border-t border-[#C9A84C]/10 mt-2">
-              <Link
-                href="/cart"
-                onClick={() => setOpen(false)}
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setIsOpen(true);
+                }}
                 className="flex items-center justify-center gap-2 w-full border border-[#C9A84C]/40 text-[#E8C97A] py-3.5 rounded-full font-sans text-sm font-semibold"
               >
-                <ShoppingBag size={16} /> Cart ({cart.length})
-              </Link>
+                <ShoppingBag size={16} /> Cart ({cartCount})
+              </button>
               <a
                 href="https://wa.me/919369895157"
                 target="_blank"

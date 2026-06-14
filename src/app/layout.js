@@ -1,7 +1,8 @@
 import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/CartDrawer";
+import { CartProvider } from "@/contexts/CartContext";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <CartProvider>
           <Navbar />
           {children}
+          <CartDrawer />
         </CartProvider>
       </body>
     </html>
