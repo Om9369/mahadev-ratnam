@@ -35,23 +35,23 @@ export default function Home() {
   const [ctaParticles, setCtaParticles] = useState([]);
 
   useEffect(() => {
-    // Initialize particles on client side
+    // Initialize particles on client side (reduced for performance)
     setParticles(
-      [...Array(20)].map(() => ({
+      [...Array(8)].map(() => ({
         x: Math.random() * 100,
         y: Math.random() * 100,
-        delay: Math.random() * 5,
-        duration: 10 + Math.random() * 10
+        delay: Math.random() * 3,
+        duration: 8 + Math.random() * 6
       }))
     );
 
-    // Initialize CTA particles
+    // Initialize CTA particles (reduced for performance)
     setCtaParticles(
-      [...Array(15)].map(() => ({
+      [...Array(6)].map(() => ({
         x: Math.random() * 100,
         y: Math.random() * 100,
-        delay: Math.random() * 4,
-        duration: 8 + Math.random() * 6
+        delay: Math.random() * 2,
+        duration: 6 + Math.random() * 4
       }))
     );
 
@@ -115,7 +115,7 @@ export default function Home() {
               backgroundPosition: ["0px 0px", "80px 80px"]
             }}
             transition={{
-              duration: 20,
+              duration: 30,
               repeat: Infinity,
               ease: "linear"
             }}
@@ -222,10 +222,10 @@ export default function Home() {
               <motion.div 
                 className="absolute -inset-4 border border-[#C9A84C]/20 rounded-[2.5rem]"
                 animate={{
-                  rotate: [0, 1, 0, -1, 0]
+                  rotate: [0, 0.5, 0, -0.5, 0]
                 }}
                 transition={{
-                  duration: 8,
+                  duration: 12,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
@@ -233,10 +233,10 @@ export default function Home() {
               <motion.div 
                 className="absolute -inset-8 border border-[#C9A84C]/10 rounded-[3rem]"
                 animate={{
-                  rotate: [0, -1, 0, 1, 0]
+                  rotate: [0, -0.5, 0, 0.5, 0]
                 }}
                 transition={{
-                  duration: 10,
+                  duration: 15,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
@@ -502,7 +502,7 @@ export default function Home() {
             <motion.div
               className="flex gap-5 w-max px-16"
               animate={{ x: ["0%", "-50%"] }}
-              transition={{ repeat: Infinity, duration: 50, ease: "linear" }}
+              transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
               whileHover={{ animationPlayState: "paused" }}
             >
               {[...newArrivals, ...newArrivals].map((product, index) => (
@@ -590,10 +590,10 @@ export default function Home() {
                 className="absolute -top-4 -left-4 w-20 h-20 rounded-full border-2 border-[#C9A84C]/30 flex items-center justify-center text-[#C9A84C] text-2xl"
                 animate={{
                   rotate: 360,
-                  scale: [1, 1.1, 1]
+                  scale: [1, 1.05, 1]
                 }}
                 transition={{
-                  duration: 8,
+                  duration: 12,
                   repeat: Infinity,
                   ease: "linear"
                 }}
@@ -795,11 +795,11 @@ export default function Home() {
           <motion.div 
             className="absolute inset-0 opacity-25 bg-[radial-gradient(ellipse_at_center,_#C9A84C_0%,_transparent_65%)]"
             animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.25, 0.35, 0.25]
+              scale: [1, 1.15, 1],
+              opacity: [0.25, 0.3, 0.25]
             }}
             transition={{
-              duration: 8,
+              duration: 10,
               repeat: Infinity,
               ease: "easeInOut"
             }}
@@ -811,7 +811,7 @@ export default function Home() {
               backgroundPosition: ["0px 0px", "60px 60px"]
             }}
             transition={{
-              duration: 20,
+              duration: 30,
               repeat: Infinity,
               ease: "linear"
             }}
@@ -887,7 +887,7 @@ export default function Home() {
               Connect with us for the latest catalogues, live pricing, exclusive designs and wholesale partnership opportunities.
             </motion.p>
             <motion.div 
-              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center w-full"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -897,17 +897,17 @@ export default function Home() {
                 href="https://wa.me/919369895157"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-gold px-10 py-4 rounded-full text-sm inline-block"
+                className="btn-gold px-8 py-4 rounded-full text-sm inline-block w-full sm:w-auto text-center"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(201,168,76,0.4)" }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.3 }}
               >
                 WhatsApp Enquiry →
               </motion.a>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.3 }}>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.3 }} className="w-full sm:w-auto">
                 <Link 
                   href="/products" 
-                  className="border border-[#C9A84C]/40 text-[#E8C97A] hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 px-10 py-4 rounded-full text-sm font-sans font-semibold transition-all duration-300"
+                  className="border border-[#C9A84C]/40 text-[#E8C97A] hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 px-8 py-4 rounded-full text-sm font-sans font-semibold transition-all duration-300 block text-center"
                 >
                   View Catalogue
                 </Link>
