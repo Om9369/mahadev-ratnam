@@ -59,7 +59,10 @@ export default function AdminLoginPage() {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError("");
+            }}
             className="w-full border border-[#eadfcc] rounded-xl px-4 py-3 outline-none focus:border-[#b08a32]"
             required
           />
