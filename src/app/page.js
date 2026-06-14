@@ -121,9 +121,10 @@ export default function Home() {
             }}
           />
 
-          <div className="relative max-w-7xl mx-auto px-5 lg:px-10 w-full grid lg:grid-cols-2 gap-16 items-center py-16">
+         <div className="relative max-w-7xl mx-auto px-5 lg:px-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center py-16">
             {/* Left — Text */}
             <motion.div
+              className="text-center lg:text-left flex flex-col items-center lg:items-start"
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, ease: "easeOut" }}
@@ -165,7 +166,7 @@ export default function Home() {
               </motion.p>
 
               <motion.div 
-                className="mt-10 flex flex-col sm:flex-row gap-4"
+               className="mt-10 flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start w-full lg:w-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
@@ -192,7 +193,7 @@ export default function Home() {
 
               {/* Stats row */}
               <motion.div 
-                className="mt-14 grid grid-cols-4 gap-4 border-t border-[#C9A84C]/15 pt-8"
+               className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-[#C9A84C]/15 pt-8 w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8, duration: 0.8 }}
@@ -553,7 +554,7 @@ export default function Home() {
           {/* Background decorative element */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C9A84C]/3 rounded-full blur-3xl" />
           
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center relative z-10">
+         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center relative z-10">
             {/* Image collage */}
             <motion.div 
               className="relative"
@@ -604,6 +605,7 @@ export default function Home() {
 
             {/* Text */}
             <motion.div
+              className="text-center lg:text-left flex flex-col items-center lg:items-start"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -680,7 +682,7 @@ export default function Home() {
               </motion.ul>
 
               <motion.div 
-                className="mt-10 flex gap-4"
+                className="mt-10 flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start w-full"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -843,7 +845,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="relative max-w-3xl mx-auto z-10">
+         <div className="relative max-w-4xl mx-auto z-10 px-4">
             <motion.div 
               className="flex items-center justify-center gap-3 mb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -887,7 +889,7 @@ export default function Home() {
               Connect with us for the latest catalogues, live pricing, exclusive designs and wholesale partnership opportunities.
             </motion.p>
             <motion.div 
-              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center w-full"
+             className="mt-10 flex flex-col md:flex-row gap-4 justify-center items-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
