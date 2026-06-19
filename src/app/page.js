@@ -1,11 +1,12 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "use client";
+"use client";
 
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { allProducts } from "@/data/allProducts";
 import CustomerReviews from "@/components/CustomerReviews";
+import { useGoldPrice } from "@/contexts/GoldPriceContext";
 
 const staticArrivals = allProducts.slice(0, 10);
 
@@ -31,9 +32,35 @@ const stats = [
 ];
 
 export default function Home() {
+  const { goldRate, getPricePerGram } = useGoldPrice();
   const [newArrivals, setNewArrivals] = useState(staticArrivals);
   const [particles, setParticles] = useState([]);
   const [ctaParticles, setCtaParticles] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const price22k = getPricePerGram("22K");
+  const price18k = getPricePerGram("18K");
+
+  const slideImages = [
+    "/images/hero1.jpg",
+    "/images/necklace-collection.jpg",
+    "/images/bridal-collection.jpg",
+    "/images/rings-collection.jpg"
+  ];
+
+  const slideDetails = [
+    { title: "Royal Bridal Heritage", desc: "Handcrafted temple and floral designs for brides." },
+    { title: "Exquisite Gold Necklaces", desc: "Stunning creations blending tradition and modern style." },
+    { title: "Premium Wholesale Collection", desc: "Trusted BIS hallmarked purity for retailers nationwide." },
+    { title: "Designer Gold Rings", desc: "Masterfully crafted pieces for everyday and special moments." }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slideImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     // Initialize particles on client side (reduced for performance)
@@ -105,8 +132,8 @@ export default function Home() {
           </div>
 
           {/* Background texture */}
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_#C9A84C_0%,_transparent_60%)]" />
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_bottom_left,_#C9A84C_0%,_transparent_50%)]" />
+          <div className="absolute inset-0 opacity-25 bg-[radial-gradient(ellipse_at_top_right,_#C9A84C_0%,_transparent_60%)]" />
+          <div className="absolute inset-0 opacity-15 bg-[radial-gradient(ellipse_at_bottom_left,_#C9A84C_0%,_transparent_50%)]" />
 
           {/* Animated grid lines */}
           <motion.div 
@@ -122,16 +149,39 @@ export default function Home() {
             }}
           />
 
-         <div className="relative max-w-7xl mx-auto px-5 lg:px-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center py-16">
+          <div className="relative max-w-7xl mx-auto px-5 lg:px-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center py-12 lg:py-20 z-10">
             {/* Left — Text */}
             <motion.div
               className="text-center lg:text-left flex flex-col items-center lg:items-start"
-              initial={{ opacity: 0, x: -40 }}
+              initial={{ opacity: 0, x: -45 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, ease: "easeOut" }}
             >
+              {/* Live Gold Price Badge */}
+              <motion.div
+                className="mb-6 inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-md border border-[#C9A84C]/35 px-4 py-2 rounded-full text-xs font-sans text-[#E8C97A] shadow-[0_0_15px_rgba(201,168,76,0.1)] hover:border-[#C9A84C] transition-all"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.6 }}
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="font-semibold tracking-wide">Live Gold Price:</span>
+                {goldRate ? (
+                  <>
+                    <span className="font-sans text-[#F3EAD8]">22K ₹{price22k.toLocaleString('en-IN')}/gm</span>
+                    <span className="text-[#C9A84C]/45">|</span>
+                    <span className="font-sans text-[#F3EAD8]">18K ₹{price18k.toLocaleString('en-IN')}/gm</span>
+                  </>
+                ) : (
+                  <span className="font-sans text-[#8A7560]">Fetching live rate...</span>
+                )}
+              </motion.div>
+
               <motion.div 
-                className="flex items-center gap-3 mb-7"
+                className="flex items-center gap-3 mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
@@ -146,19 +196,19 @@ export default function Home() {
               </motion.div>
 
               <motion.h1 
-                className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-[1.08] tracking-tight"
+                className="font-serif text-4xl md:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
               >
                 Crafted For<br />
-                <span className="gold-shimmer">Generations.</span><br />
-                <span className="text-[#F3EAD8]">Worn With</span><br />
-                <span className="gold-shimmer">Royalty.</span>
+                <span className="gold-shimmer font-bold">Generations.</span><br />
+                <span className="text-[#F3EAD8] font-light">Worn With</span><br />
+                <span className="gold-shimmer font-bold">Royalty.</span>
               </motion.h1>
 
               <motion.p 
-                className="mt-7 text-[#A89880] leading-8 text-sm md:text-base font-sans max-w-md"
+                className="mt-6 text-[#A89880] leading-8 text-sm md:text-base font-sans max-w-md"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
@@ -167,16 +217,16 @@ export default function Home() {
               </motion.p>
 
               <motion.div 
-               className="mt-10 flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start w-full lg:w-auto"
+                className="mt-8 flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start w-full lg:w-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
               >
                 <motion.a 
                   href="#collections" 
-                  className="btn-gold px-8 py-4 rounded-full text-sm text-center inline-block"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="btn-gold px-8 py-4 rounded-full text-sm text-center inline-block w-full sm:w-auto hover:shadow-[0_8px_30px_rgba(201,168,76,0.35)] transition-shadow"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   Explore Collections
                 </motion.a>
@@ -184,9 +234,9 @@ export default function Home() {
                   href="https://wa.me/919369895157"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-[#C9A84C]/40 text-[#E8C97A] hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 px-8 py-4 rounded-full text-sm text-center transition-all duration-300 font-sans font-semibold"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="border border-[#C9A84C]/45 text-[#E8C97A] hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 px-8 py-4 rounded-full text-sm text-center transition-all duration-300 font-sans font-semibold w-full sm:w-auto"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   WhatsApp Enquiry
                 </motion.a>
@@ -194,7 +244,7 @@ export default function Home() {
 
               {/* Stats row */}
               <motion.div 
-               className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-[#C9A84C]/15 pt-8 w-full"
+                className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-[#C9A84C]/15 pt-8 w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8, duration: 0.8 }}
@@ -213,18 +263,18 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Right — Hero image */}
+            {/* Right — Interactive Slideshow Showcase (Visible on all devices, stacks beautifully) */}
             <motion.div
-              initial={{ opacity: 0, x: 40, scale: 0.9 }}
+              initial={{ opacity: 0, x: 45, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
-              className="relative hidden lg:block"
+              className="relative w-full max-w-md lg:max-w-none mx-auto px-4 sm:px-0"
             >
               {/* Outer decorative frame with animation */}
               <motion.div 
-                className="absolute -inset-4 border border-[#C9A84C]/20 rounded-[2.5rem]"
+                className="absolute -inset-3 border border-[#C9A84C]/20 rounded-[2.2rem]"
                 animate={{
-                  rotate: [0, 0.5, 0, -0.5, 0]
+                  rotate: [0, 0.6, 0, -0.6, 0]
                 }}
                 transition={{
                   duration: 12,
@@ -233,50 +283,66 @@ export default function Home() {
                 }}
               />
               <motion.div 
-                className="absolute -inset-8 border border-[#C9A84C]/10 rounded-[3rem]"
+                className="absolute -inset-6 border border-[#C9A84C]/10 rounded-[2.5rem] hidden sm:block"
                 animate={{
-                  rotate: [0, -0.5, 0, 0.5, 0]
+                  rotate: [0, -0.4, 0, 0.4, 0]
                 }}
                 transition={{
-                  duration: 15,
+                  duration: 16,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
               />
 
-              <motion.div 
-                className="relative rounded-[2rem] overflow-hidden border border-[#C9A84C]/30 shadow-2xl"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.5 }}
-              >
-                <img
-                  src="/images/hero1.jpg"
-                  alt="Mahadev Ratnam Premium Jewellery"
-                  className="w-full h-[580px] object-cover"
-                />
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0F0A06]/60 via-transparent to-transparent" />
+              <div className="relative rounded-[2rem] overflow-hidden border border-[#C9A84C]/35 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-[#1A1008] aspect-[4/5] sm:aspect-square lg:h-[550px] lg:w-full">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentSlide}
+                    src={slideImages[currentSlide]}
+                    alt="Mahadev Ratnam Premium Jewellery Collection"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                  />
+                </AnimatePresence>
+                
+                {/* Dark premium overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F0A06]/90 via-[#0F0A06]/20 to-transparent" />
 
-                {/* Floating card with animation */}
-                <motion.div 
-                  className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-5 py-4"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1, duration: 0.8 }}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="flex items-center justify-between">
+                {/* Top slide indicators */}
+                <div className="absolute top-5 left-6 flex gap-2.5 z-20 bg-black/40 backdrop-blur-md border border-white/10 px-3.5 py-2 rounded-full">
+                  {slideImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentSlide(idx)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        currentSlide === idx ? "w-6 bg-[#C9A84C]" : "w-1.5 bg-white/40"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* Floating details panel */}
+                <div className="absolute bottom-6 left-6 right-6 bg-[#0F0A06]/85 backdrop-blur-lg border border-white/15 rounded-2xl p-5 shadow-2xl z-20">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans">Premium Quality</p>
-                      <p className="text-white font-serif text-lg mt-0.5">BIS Hallmarked Gold</p>
+                      <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans font-bold">
+                        {slideDetails[currentSlide].title}
+                      </p>
+                      <p className="text-white/80 font-sans text-xs mt-1 leading-5">
+                        {slideDetails[currentSlide].desc}
+                      </p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans">Available In</p>
-                      <p className="text-white font-serif text-lg mt-0.5">18K & 22K</p>
+                    <div className="flex-shrink-0 self-start sm:self-center">
+                      <span className="inline-block text-[10px] bg-[#C9A84C] text-[#0F0A06] px-3 py-1 rounded-full font-sans font-bold tracking-wider">
+                        BIS 916
+                      </span>
                     </div>
                   </div>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>

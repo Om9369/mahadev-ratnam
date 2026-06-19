@@ -2,10 +2,14 @@
 
 import { useState, useMemo } from "react";
 import ProductSearchFilter from "@/components/ProductSearchFilter";
+import WishlistButton from "@/components/WishlistButton";
 import { allProducts } from "@/data/allProducts";
 import Link from "next/link";
+import Image from "next/image";
+import { useGoldPrice } from "@/contexts/GoldPriceContext";
 
 export default function ProductsClient() {
+  const { calculateProductPrice, isLoading: goldPriceLoading } = useGoldPrice();
   const [filters, setFilters] = useState({
     searchTerm: "",
     category: "all",
@@ -95,19 +99,27 @@ export default function ProductsClient() {
                   : [];
 
                 return (
-                  <Link
-                    href={`/products/${product.slug}`}
+                  <div
                     key={product.id || product.slug}
                     className="group bg-white rounded-2xl md:rounded-3xl overflow-hidden border border-[#E8D8B8] hover:border-[#C9A84C]/40 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col"
                   >
                     <div className="relative overflow-hidden">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-52 md:h-72 object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
+                      <Link href={`/products/${product.slug}`}>
+                        <div className="relative w-full h-52 md:h-72">
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            className="object-cover group-hover:scale-110 transition-transform duration-700"
+                            loading="lazy"
+                          />
+                        </div>
+                      </Link>
 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                      <WishlistButton product={product} />
 
                       {product.featured && (
                         <div className="absolute top-3 left-3 bg-[#C9A84C] text-[#0F0A06] text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full font-sans">
@@ -140,23 +152,30 @@ export default function ProductsClient() {
                       </div>
 
                       <div className="mt-auto pt-4 flex items-center justify-between">
-                        {product.price22k ? (
+                        {product.weight ? (
                           <div>
                             <p className="text-[9px] text-[#9A8870] font-sans">From</p>
                             <p className="text-sm md:text-base font-serif text-[#2D2219] font-semibold">
-                              ₹{Number(product.price22k).toLocaleString("en-IN")}
+                              {goldPriceLoading ? (
+                                <span className="text-[#9A8870]">Loading...</span>
+                              ) : (
+                                `₹${calculateProductPrice(product.weight, "22K").toLocaleString("en-IN")}`
+                              )}
                             </p>
                           </div>
                         ) : (
                           <div />
                         )}
 
-                        <span className="text-[10px] md:text-xs bg-[#0F0A06] text-[#E8C97A] px-3 md:px-4 py-2 rounded-full font-sans font-semibold group-hover:bg-[#C9A84C] group-hover:text-[#0F0A06] transition-colors duration-300">
+                        <Link
+                          href={`/products/${product.slug}`}
+                          className="text-[10px] md:text-xs bg-[#0F0A06] text-[#E8C97A] px-3 md:px-4 py-2 rounded-full font-sans font-semibold group-hover:bg-[#C9A84C] group-hover:text-[#0F0A06] transition-colors duration-300"
+                        >
                           View →
-                        </span>
+                        </Link>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
             </div>

@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
-import { Menu, ShoppingBag, X, ChevronDown, Phone } from "lucide-react";
+import { Menu, ShoppingBag, X, ChevronDown, Phone, Heart, User } from "lucide-react";
 
 const categories = [
   {
@@ -73,7 +75,9 @@ const categories = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { cart, cartCount, setIsOpen } = useCart();
+  const cart = useCart();
+  const wishlist = useWishlist();
+  const auth = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -126,14 +130,34 @@ export default function Navbar() {
               WhatsApp Enquiry
             </a>
 
+            <Link
+              href="/wishlist"
+              className="relative p-2 hover:text-[#C9A84C] transition-colors"
+            >
+              <Heart size={22} />
+              {wishlist.wishlistCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-[#C9A84C] text-[#0F0A06] text-[9px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center min-w-[18px] min-h-[18px]">
+                  {wishlist.wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            <Link
+              href={auth.isAuthenticated ? "/profile" : "/login"}
+              className="relative p-2 hover:text-[#C9A84C] transition-colors"
+              title={auth.isAuthenticated ? "My Profile" : "Sign In"}
+            >
+              <User size={22} />
+            </Link>
+
             <button
-              onClick={() => setIsOpen(true)}
+              onClick={() => cart.setIsOpen(true)}
               className="relative p-2 hover:text-[#C9A84C] transition-colors"
             >
               <ShoppingBag size={22} />
-              {cartCount > 0 && (
+              {cart.cartCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-[#C9A84C] text-[#0F0A06] text-[9px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center min-w-[18px] min-h-[18px]">
-                  {cartCount}
+                  {cart.cartCount}
                 </span>
               )}
             </button>
@@ -243,11 +267,11 @@ export default function Navbar() {
               <button
                 onClick={() => {
                   setOpen(false);
-                  setIsOpen(true);
+                  cart.setIsOpen(true);
                 }}
                 className="flex items-center justify-center gap-2 w-full border border-[#C9A84C]/40 text-[#E8C97A] py-3.5 rounded-full font-sans text-sm font-semibold"
               >
-                <ShoppingBag size={16} /> Cart ({cartCount})
+                <ShoppingBag size={16} /> Cart ({cart.cartCount})
               </button>
               <a
                 href="https://wa.me/919369895157"

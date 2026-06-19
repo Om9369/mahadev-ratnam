@@ -1,8 +1,12 @@
 import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import CartDrawer from "@/components/CartDrawer";
-import { CartProvider } from "@/contexts/CartContext";
+import dynamic from "next/dynamic";
+import { CombinedProvider } from "@/contexts/CombinedProvider";
+
+const CartDrawer = dynamic(() => import("@/components/CartDrawer"), {
+  loading: () => null,
+});
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -26,11 +30,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${montserrat.variable} ${playfair.variable} font-sans relative min-h-screen bg-[#FCF8F3] text-[#2D2219]`}>
-        <CartProvider>
+        <CombinedProvider>
           <Navbar />
           {children}
           <CartDrawer />
-        </CartProvider>
+        </CombinedProvider>
       </body>
     </html>
   );

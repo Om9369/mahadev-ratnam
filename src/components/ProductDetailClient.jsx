@@ -4,8 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "@/components/AddToCartButton";
+import WishlistButton from "@/components/WishlistButton";
+import { useGoldPrice } from "@/contexts/GoldPriceContext";
 
 export default function ProductDetailClient({ product, relatedProducts }) {
+  const { calculateProductPrice, getPricePerGram, isLoading: goldPriceLoading } = useGoldPrice();
   const [selectedImage, setSelectedImage] = useState(0);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
 
@@ -39,6 +42,37 @@ export default function ProductDetailClient({ product, relatedProducts }) {
       { size: "2.10", diameter: "72mm" },
       { size: "2.12", diameter: "76mm" },
     ],
+    chains: [
+      { size: "16 inches", length: "40.6cm" },
+      { size: "18 inches", length: "45.7cm" },
+      { size: "20 inches", length: "50.8cm" },
+      { size: "22 inches", length: "55.9cm" },
+      { size: "24 inches", length: "61.0cm" },
+      { size: "26 inches", length: "66.0cm" },
+      { size: "28 inches", length: "71.1cm" },
+      { size: "30 inches", length: "76.2cm" },
+    ],
+    necklaces: [
+      { size: "16 inches", length: "40.6cm" },
+      { size: "18 inches", length: "45.7cm" },
+      { size: "20 inches", length: "50.8cm" },
+      { size: "22 inches", length: "55.9cm" },
+      { size: "24 inches", length: "61.0cm" },
+      { size: "26 inches", length: "66.0cm" },
+      { size: "28 inches", length: "71.1cm" },
+      { size: "30 inches", length: "76.2cm" },
+    ],
+    earrings: [
+      { size: "Small", description: "Under 1 inch" },
+      { size: "Medium", description: "1-1.5 inches" },
+      { size: "Large", description: "1.5-2 inches" },
+      { size: "Extra Large", description: "Over 2 inches" },
+    ],
+    pendants: [
+      { size: "Small", description: "Under 1 inch" },
+      { size: "Medium", description: "1-1.5 inches" },
+      { size: "Large", description: "1.5-2 inches" },
+    ],
   };
 
   const purityArray = Array.isArray(product.purity)
@@ -48,7 +82,13 @@ export default function ProductDetailClient({ product, relatedProducts }) {
     : ["18K", "22K"];
 
   const category = product.category?.toLowerCase();
-  const sizeCategory = category === "rings" ? "rings" : category === "bangles" ? "bangles" : null;
+  const sizeCategory = category === "rings" ? "rings" 
+    : category === "bangles" ? "bangles" 
+    : category === "chains" ? "chains" 
+    : category === "necklaces" ? "necklaces" 
+    : category === "earrings" ? "earrings" 
+    : category === "pendants" ? "pendants" 
+    : null;
 
   return (
     <>
@@ -96,6 +136,10 @@ export default function ProductDetailClient({ product, relatedProducts }) {
                       ⭐ Featured
                     </div>
                   )}
+
+                  <div className="absolute top-4 left-4 z-20">
+                    <WishlistButton product={product} />
+                  </div>
                 </div>
 
                 {/* Thumbnail Gallery */}
@@ -186,30 +230,54 @@ export default function ProductDetailClient({ product, relatedProducts }) {
                 )}
               </div>
 
-              {(product.price18k || product.price22k) && (
+              {product.weight && (
                 <div className="mt-5 grid grid-cols-2 gap-4">
-                  {product.price18k && (
+                  {purityArray.includes("18K") && (
                     <div className="bg-[#0F0A06] rounded-2xl p-5 text-center border border-[#C9A84C]/20">
                       <p className="text-[10px] text-[#C9A84C] tracking-[3px] uppercase font-sans font-semibold">18K Gold</p>
                       <p className="font-serif text-2xl text-white mt-2">
-                        ₹{Number(product.price18k).toLocaleString("en-IN")}
+                        {goldPriceLoading ? (
+                          <span className="text-[#8A7560]">Loading...</span>
+                        ) : (
+                          `₹${calculateProductPrice(product.weight, "18K").toLocaleString("en-IN")}`
+                        )}
                       </p>
                     </div>
                   )}
 
-                  {product.price22k && (
+                  {purityArray.includes("22K") && (
                     <div className="bg-[#C9A84C] rounded-2xl p-5 text-center">
                       <p className="text-[10px] text-[#0F0A06] tracking-[3px] uppercase font-sans font-semibold">22K Gold</p>
                       <p className="font-serif text-2xl text-[#0F0A06] mt-2">
-                        ₹{Number(product.price22k).toLocaleString("en-IN")}
+                        {goldPriceLoading ? (
+                          <span className="text-[#8A7560]">Loading...</span>
+                        ) : (
+                          `₹${calculateProductPrice(product.weight, "22K").toLocaleString("en-IN")}`
+                        )}
                       </p>
                     </div>
                   )}
                 </div>
               )}
 
+              {/* Show size guide only for rings, bangles, chains, necklaces */}
+              {(sizeCategory === "rings" || sizeCategory === "bangles" || sizeCategory === "chains" || sizeCategory === "necklaces") && (
+                <div className="flex items-center justify-between pt-2 border-t border-[#F0E6D0]">
+                  <span className="text-xs uppercase tracking-wider text-[#9A8870] font-sans font-semibold">Size Guide</span>
+                  <button
+                    onClick={() => {
+                      console.log("Size guide button clicked");
+                      setShowSizeGuide(true);
+                    }}
+                    className="text-[10px] text-[#C9A84C] font-bold font-sans px-3 py-1 rounded-full border border-[#C9A84C]/40 hover:bg-[#C9A84C] hover:text-[#0F0A06] transition-colors"
+                  >
+                    View Chart →
+                  </button>
+                </div>
+              )}
+
               <p className="mt-3 text-[10px] text-[#9A8870] font-sans text-center italic">
-                * Prices may vary based on live gold rate, weight and making charges.
+                * Prices based on live gold rate, updated every 10 minutes. Includes making charges.
               </p>
 
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
